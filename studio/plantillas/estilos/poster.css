@@ -1,0 +1,119 @@
+/* PÓSTER — Archivo extendida, título arriba y texto abajo, sin líneas. */
+
+.lamina {
+  padding: 66px 76px 62px;
+  font-family: "Archivo", sans-serif;
+  --ancha: 125%;
+}
+
+/* arriba: etiqueta y folio */
+.cabecera { justify-content: space-between; gap: 24px; font-size: 25px; font-weight: 600; letter-spacing: -.005em; }
+.cabecera .etiqueta { color: var(--t1); }
+.folio { color: var(--t3); font-weight: 500; font-variant-numeric: tabular-nums; }
+.folio b { color: var(--t1); font-weight: 700; }
+
+/* abajo: fuente y firma */
+.fuente { margin-bottom: 26px; font-size: 19px; line-height: 1.45; color: var(--t3); text-wrap: pretty; }
+.fuente b { font-weight: 600; color: var(--t2); }
+.firma { gap: 14px; font-size: 23px; font-weight: 700; letter-spacing: -.01em; font-stretch: var(--ancha); }
+.firma .desliza { font-stretch: 100%; font-weight: 600; letter-spacing: 0; }
+.firma .exh { display: none; }
+
+/* contenido: el título manda arriba, lo demás cae al pie */
+.cuerpo { padding: 64px 0 40px; }
+.titulo {
+  font-weight: 800;
+  font-stretch: var(--ancha);
+  font-size: calc(92px * var(--k));
+  line-height: .98;
+  letter-spacing: -.035em;
+  margin-bottom: auto;
+  padding-bottom: calc(48px * var(--k));
+}
+.cuerpo p { font-size: calc(38px * var(--k)); line-height: 1.34; letter-spacing: -.012em; color: var(--t2); max-width: 24em; }
+.cuerpo p + p, .cuerpo .lista + p, .cuerpo .tabla + p { margin-top: .7em; }
+.bajada { font-size: calc(46px * var(--k)) !important; line-height: 1.2 !important; color: var(--t1) !important; font-weight: 600; margin-bottom: calc(28px * var(--k)); }
+.rotulo { font-size: calc(24px * var(--k)) !important; font-weight: 700; color: var(--enfasis) !important; margin-bottom: calc(18px * var(--k)); }
+strong { font-weight: 700; }
+
+.destacado { margin-top: calc(40px * var(--k)); }
+.destacado strong { color: inherit; font-weight: 800; }
+.destacado p {
+  display: inline;
+  font-size: calc(40px * var(--k)) !important;
+  line-height: 1.5 !important;
+  font-weight: 600;
+  color: var(--bloque-t) !important;
+  background: var(--bloque);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: .12em .32em;
+  border-radius: .22em;
+}
+
+.lista li { font-size: calc(36px * var(--k)); line-height: 1.32; color: var(--t2); padding-left: 64px; margin-bottom: .55em; }
+.lista li::before { content: ""; position: absolute; left: 0; top: .42em; width: 22px; height: 22px; border-radius: 50%; background: var(--acento); }
+ol.lista li::before {
+  width: auto; height: auto; top: .1em; background: none; content: counter(n);
+  font-weight: 800; font-stretch: var(--ancha); font-size: .8em; color: var(--enfasis);
+}
+
+.tabla { font-size: calc(30px * var(--k)); color: var(--t2); }
+.tabla th { padding: 0 0 18px; font-size: calc(20px * var(--k)); font-weight: 600; color: var(--t3); }
+.tabla td { padding: calc(20px * var(--k)) 0; }
+.tabla tbody tr:nth-child(odd) td { background: color-mix(in srgb, var(--t1) 5%, transparent); }
+.tabla td:first-child { color: var(--t1); font-weight: 600; padding-left: 18px; border-radius: 12px 0 0 12px; }
+.tabla td:last-child { padding-right: 18px; border-radius: 0 12px 12px 0; }
+.tabla th:first-child { padding-left: 18px; }
+.tabla th:last-child { padding-right: 18px; }
+
+.imagen img { border-radius: 24px; max-height: calc(600px * var(--k)); }
+.nota { margin-top: calc(28px * var(--k)); font-size: 21px !important; color: var(--t3) !important; }
+
+/* portada */
+.tipo-portada .cabecera .etiqueta { font-weight: 700; font-stretch: var(--ancha); letter-spacing: -.01em; }
+.tipo-portada .folio { display: none; }
+.tipo-portada .cuerpo { justify-content: flex-end; padding-bottom: 56px; }
+.tipo-portada .titulo { font-size: calc(128px * var(--k)); line-height: .94; letter-spacing: -.045em; margin-bottom: 0; padding-bottom: calc(44px * var(--k)); }
+.tipo-portada .cuerpo p { font-size: calc(40px * var(--k)); color: var(--t2); }
+
+/* cifra */
+.tipo-cifra .cuerpo { justify-content: flex-end; }
+.tipo-cifra .titulo {
+  font-size: calc(250px * var(--k)); line-height: .86; letter-spacing: -.06em;
+  white-space: nowrap; text-wrap: nowrap; color: var(--enfasis);
+  margin-bottom: 0; padding-bottom: calc(40px * var(--k));
+}
+.tipo-cifra .cuerpo p { font-size: calc(44px * var(--k)); line-height: 1.22; color: var(--t1); font-weight: 600; letter-spacing: -.02em; }
+.tipo-cifra .cuerpo p + p { font-size: calc(32px * var(--k)); color: var(--t2); font-weight: 400; }
+
+/* cita */
+.tipo-cita .cuerpo { justify-content: center; }
+.tipo-cita .destacado { margin: 0; }
+.tipo-cita .destacado::before { content: "“"; display: block; height: calc(130px * var(--k)); font-size: calc(240px * var(--k)); line-height: 1; font-weight: 800; color: var(--enfasis); }
+.tipo-cita .destacado p {
+  display: block; background: none; padding: 0; color: var(--t1) !important;
+  font-size: calc(56px * var(--k)) !important; line-height: 1.14 !important; font-weight: 700; letter-spacing: -.03em;
+  font-stretch: 112%; text-wrap: balance;
+}
+.tipo-cita .destacado + p { margin-top: calc(44px * var(--k)); font-size: calc(28px * var(--k)); font-weight: 600; color: var(--t3); }
+
+/* gráfico */
+.tipo-grafico .cuerpo { padding-top: 56px; padding-bottom: 28px; }
+.tipo-grafico .titulo { font-size: calc(64px * var(--k)); line-height: 1; margin-bottom: 0; padding-bottom: calc(16px * var(--k)); }
+.tipo-grafico .cuerpo p { font-size: calc(30px * var(--k)); }
+.grafico { margin-top: calc(44px * var(--k)); }
+
+/* cierre */
+.tipo-cierre .cuerpo { justify-content: flex-end; padding-bottom: 56px; }
+.tipo-cierre .titulo { margin-bottom: 0; }
+
+/* textos de los gráficos */
+.g-eje { font: 500 24px "Archivo"; fill: var(--t3); }
+.g-cat { font: 500 26px "Archivo"; fill: var(--t2); }
+.g-cat.fuerte { fill: var(--t1); font-weight: 700; }
+.g-valor { font: 600 27px "Archivo"; fill: var(--t2); letter-spacing: -.01em; }
+.g-valor.fuerte { fill: var(--t1); font-weight: 800; }
+.g-serie { font: 600 25px "Archivo"; fill: var(--t1); }
+.g-anota { font: 500 21px "Archivo"; fill: var(--t3); }
+.g-grande { font: 800 112px "Archivo"; font-stretch: 125%; fill: var(--t1); letter-spacing: -.05em; }

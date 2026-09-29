@@ -1,0 +1,65 @@
+name: Compilar láminas
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "posts/**"
+      - "graficos/**"
+      - "datos/**"
+      - "marca/**"
+      - "studio/**"
+      - "requirements.txt"
+      - ".github/workflows/compilar.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: compilar
+  cancel-in-progress: true
+
+jobs:
+  compilar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar
+        run: pip install -r requirements.txt
+
+      # Los runners de GitHub ya traen Google Chrome.
+      - name: Compilar
+        run: python -m studio compilar
+        env:
+          CRIMDATA_NAVEGADOR: chrome
+
+      - name: Adjuntar PNG
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: laminas
+          path: |
+            salida
+            !salida/.html
+          if-no-files-found: ignore
+
+      - name: Publicar en la rama png
+        if: always()
+        run: |
+          [ -f salida/README.md ] || exit 0
+          cd salida
+          rm -rf .html
+          # README.md (el índice con todas las láminas) lo escribe `python -m studio compilar`
+          git init -q -b png
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -qm "Láminas de ${GITHUB_SHA::7}"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" png

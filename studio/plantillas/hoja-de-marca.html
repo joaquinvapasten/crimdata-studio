@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>crim.data · hoja de marca</title>
+<style>
+@font-face { font-family: "Archivo"; src: url("{{ fuentes }}/Archivo.ttf") format("truetype"); font-weight: 100 900; font-stretch: 62% 125%; }
+@font-face { font-family: "Bricolage Grotesque"; src: url("{{ fuentes }}/BricolageGrotesque.ttf") format("truetype"); font-weight: 200 800; font-stretch: 75% 100%; }
+:root {
+  --tinta: #1B2430; --piedra: #EFEDE6; --ladrillo: #A63D2F; --musgo: #4B6858;
+  --t2: #4A505B; --t3: #8B877F; --linea: rgba(27, 36, 48, .12);
+  --monograma: url("{{ monograma }}");
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: 1600px; background: var(--piedra); color: var(--tinta); font-family: "Archivo", sans-serif; -webkit-font-smoothing: antialiased; }
+
+.cab { display: flex; align-items: center; gap: 72px; padding: 96px 96px 88px; background: var(--ladrillo); color: var(--piedra); }
+.avatar { flex: none; width: 300px; height: 300px; border-radius: 50%; border: 12px solid var(--piedra); background: url("{{ logo }}") center / cover; }
+.nombre { font-weight: 800; font-stretch: 125%; font-size: 150px; line-height: .9; letter-spacing: -.05em; }
+.lema { margin-top: 26px; font-weight: 600; font-size: 44px; letter-spacing: -.015em; }
+.datos-cab { margin-top: 30px; display: flex; gap: 28px; font-weight: 600; font-size: 24px; opacity: .78; }
+
+section { padding: 88px 96px 0; }
+.rotulo { display: flex; align-items: baseline; gap: 20px; margin-bottom: 40px; padding-bottom: 18px; border-bottom: 3px solid var(--tinta); }
+.rotulo b { font-weight: 800; font-stretch: 125%; font-size: 56px; letter-spacing: -.04em; }
+.rotulo span { font-weight: 600; font-size: 24px; color: var(--t3); }
+
+/* paleta */
+.paleta { display: grid; grid-template-columns: 1.35fr 1fr 1fr 1fr; gap: 20px; }
+.color .muestra { height: 380px; border-radius: 6px; padding: 28px; display: flex; flex-direction: column; justify-content: flex-end; }
+.color .muestra b { font-weight: 800; font-stretch: 125%; font-size: 46px; letter-spacing: -.04em; line-height: 1; }
+.color .muestra i { font-style: normal; font-weight: 600; font-size: 22px; margin-top: 10px; opacity: .8; }
+.color dl { margin-top: 20px; display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; font-size: 24px; }
+.color dt { font-weight: 600; color: var(--t3); }
+.color dd { font-weight: 700; font-variant-numeric: tabular-nums; }
+.color p { margin-top: 14px; font-size: 22px; line-height: 1.4; color: var(--t2); }
+.piedra .muestra { box-shadow: inset 0 0 0 3px var(--linea); }
+
+.proporcion { margin-top: 48px; }
+.proporcion .barra { display: flex; height: 64px; border-radius: 6px; overflow: hidden; border: 3px solid var(--linea); }
+.proporcion .barra div { display: flex; align-items: center; padding-left: 18px; font-weight: 700; font-size: 20px; }
+.proporcion p { margin-top: 14px; font-size: 22px; color: var(--t3); }
+
+/* logo */
+.logos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.logo { border-radius: 6px; height: 300px; display: grid; place-items: center; }
+.logo .cuadro { width: 240px; height: 240px; background: url("{{ logo }}") center / cover; }
+.logo .circulo { width: 240px; height: 240px; border-radius: 50%; background: url("{{ logo }}") center / cover; border: 9px solid var(--piedra); }
+.logo .firma { display: flex; align-items: center; gap: 16px; font-weight: 700; font-stretch: 125%; font-size: 34px; letter-spacing: -.02em; }
+.marca { display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; }
+.marca i { width: 43px; height: 17px; -webkit-mask: var(--monograma) center / contain no-repeat; mask: var(--monograma) center / contain no-repeat; }
+.pie-logo { margin-top: 14px; font-size: 22px; line-height: 1.4; color: var(--t2); }
+
+/* tipografía */
+.tipos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.tipo { border-radius: 6px; padding: 36px 36px 40px; min-height: 420px; display: flex; flex-direction: column; }
+.tipo small { font-weight: 700; font-size: 20px; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+.tipo .aa { margin-top: 18px; font-size: 170px; line-height: .9; }
+.tipo .muestra-t { margin-top: auto; font-size: 50px; line-height: .98; }
+.tipo p { margin-top: 18px; font-size: 21px; line-height: 1.4; opacity: .78; font-family: "Archivo"; font-stretch: 100%; font-weight: 500; letter-spacing: 0; text-transform: none; }
+.t-poster { background: var(--piedra); box-shadow: inset 0 0 0 3px var(--linea); }
+.t-poster .aa, .t-poster .muestra-t { font-weight: 800; font-stretch: 125%; letter-spacing: -.045em; }
+.t-expediente { background: var(--tinta); color: var(--piedra); }
+.t-expediente .aa, .t-expediente .muestra-t { font-weight: 800; font-stretch: 62%; text-transform: uppercase; letter-spacing: -.01em; }
+.t-expediente .muestra-t { font-size: 64px; }
+.t-suave { background: #FAF8F3; box-shadow: inset 0 0 0 3px var(--linea); }
+.t-suave .aa, .t-suave .muestra-t { font-family: "Bricolage Grotesque"; font-weight: 700; letter-spacing: -.05em; }
+
+/* combinaciones */
+.combos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.combo { border-radius: 6px; height: 200px; padding: 26px 28px; display: flex; flex-direction: column; justify-content: space-between; }
+.combo b { font-weight: 800; font-stretch: 112%; font-size: 32px; letter-spacing: -.03em; line-height: 1.05; }
+.combo span { font-weight: 600; font-size: 21px; }
+.combo.no { position: relative; padding-right: 110px; }
+.combo.no::after { content: "✕  no"; position: absolute; top: 22px; right: 24px; font-weight: 800; font-size: 22px; color: var(--piedra); background: var(--tinta); padding: 6px 12px; border-radius: 4px; }
+
+/* reglas */
+.reglas { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.regla { border-radius: 6px; padding: 32px 36px; }
+.regla h3 { font-weight: 800; font-stretch: 125%; font-size: 32px; letter-spacing: -.03em; margin-bottom: 18px; }
+.regla li { list-style: none; position: relative; padding-left: 34px; font-size: 23px; line-height: 1.38; margin-bottom: 12px; }
+.regla li::before { content: ""; position: absolute; left: 0; top: .45em; width: 14px; height: 14px; border-radius: 50%; background: currentColor; }
+.si { background: var(--musgo); color: var(--piedra); }
+.no-hacer { background: var(--tinta); color: var(--piedra); }
+.no-hacer li::before { background: var(--ladrillo); }
+
+.pie { margin-top: 96px; padding: 40px 96px; display: flex; align-items: center; gap: 18px; background: var(--tinta); color: var(--piedra); font-weight: 700; font-size: 26px; }
+.pie .marca { width: 56px; height: 56px; background: var(--ladrillo); }
+.pie .marca i { width: 34px; height: 13px; background: var(--piedra); }
+.pie .der { margin-left: auto; font-weight: 600; opacity: .6; }
+</style>
+</head>
+<body>
+
+<header class="cab">
+  <div class="avatar"></div>
+  <div>
+    <div class="nombre">crim.data</div>
+    <div class="lema">Crimen y seguridad, con evidencia</div>
+    <div class="datos-cab"><span>@crim.data · Instagram</span><span>Hoja de marca</span></div>
+  </div>
+</header>
+
+<section>
+  <div class="rotulo"><b>Paleta</b><span>cuatro colores, nada más</span></div>
+  <div class="paleta">
+    <div class="color">
+      <div class="muestra" style="background:#A63D2F;color:#EFEDE6"><b>Ladrillo</b><i>Color principal</i></div>
+      <dl><dt>HEX</dt><dd>#A63D2F</dd><dt>RGB</dt><dd>166 · 61 · 47</dd></dl>
+      <p>El del logo. Portadas, énfasis en el texto y el dato destacado de cada gráfico.</p>
+    </div>
+    <div class="color">
+      <div class="muestra" style="background:#1B2430;color:#EFEDE6"><b>Tinta</b></div>
+      <dl><dt>HEX</dt><dd>#1B2430</dd><dt>RGB</dt><dd>27 · 36 · 48</dd></dl>
+      <p>Texto sobre piedra y fondo de los cierres.</p>
+    </div>
+    <div class="color piedra">
+      <div class="muestra" style="background:#EFEDE6;color:#1B2430"><b>Piedra</b></div>
+      <dl><dt>HEX</dt><dd>#EFEDE6</dd><dt>RGB</dt><dd>239 · 237 · 230</dd></dl>
+      <p>Fondo de lectura y texto sobre colores oscuros.</p>
+    </div>
+    <div class="color">
+      <div class="muestra" style="background:#4B6858;color:#EFEDE6"><b>Musgo</b></div>
+      <dl><dt>HEX</dt><dd>#4B6858</dd><dt>RGB</dt><dd>75 · 104 · 88</dd></dl>
+      <p>Tercer color de los gráficos y fondo alternativo, en dosis chicas.</p>
+    </div>
+  </div>
+  <div class="proporcion">
+    <div class="barra">
+      <div style="width:44%;background:#EFEDE6;color:#1B2430">Piedra</div>
+      <div style="width:28%;background:#A63D2F;color:#EFEDE6">Ladrillo</div>
+      <div style="width:22%;background:#1B2430;color:#EFEDE6">Tinta</div>
+      <div style="width:6%;background:#4B6858"></div>
+    </div>
+    <p>Cuánto se ve cada color en el perfil, más o menos.</p>
+  </div>
+</section>
+
+<section>
+  <div class="rotulo"><b>Logo</b><span>monograma C·D</span></div>
+  <div class="logos">
+    <div class="logo" style="background:#1B2430"><div class="cuadro"></div></div>
+    <div class="logo" style="background:#1B2430"><div class="circulo"></div></div>
+    <div class="logo" style="background:#EFEDE6;box-shadow:inset 0 0 0 3px var(--linea)"><div class="firma"><span class="marca" style="background:#A63D2F"><i style="background:#EFEDE6"></i></span>crim.data</div></div>
+    <div class="logo" style="background:#A63D2F;color:#EFEDE6"><div class="firma"><span class="marca" style="background:#EFEDE6"><i style="background:#A63D2F"></i></span>crim.data</div></div>
+  </div>
+  <p class="pie-logo">Archivo, avatar de Instagram y la firma que va al pie de cada lámina. El logo va siempre en ladrillo con la C·D en piedra; sobre ladrillo, la firma se invierte.</p>
+</section>
+
+<section>
+  <div class="rotulo"><b>Tipografía</b><span>una por estilo, todas con licencia libre (OFL)</span></div>
+  <div class="tipos">
+    <div class="tipo t-poster">
+      <small>Póster</small><div class="aa">Aa</div>
+      <div class="muestra-t">Crimen y seguridad, con evidencia</div>
+      <p>Archivo extendida, peso 800.</p>
+    </div>
+    <div class="tipo t-expediente">
+      <small>Expediente</small><div class="aa">Aa</div>
+      <div class="muestra-t">Crimen y seguridad, con evidencia</div>
+      <p>Archivo condensada, mayúsculas, peso 800.</p>
+    </div>
+    <div class="tipo t-suave">
+      <small>Suave</small><div class="aa">Aa</div>
+      <div class="muestra-t">Crimen y seguridad, con evidencia</div>
+      <p>Bricolage Grotesque, peso 700.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="rotulo"><b>Combinaciones</b><span>contraste de lectura (mínimo 4,5 : 1)</span></div>
+  <div class="combos">
+    <div class="combo" style="background:#A63D2F;color:#EFEDE6"><b>Piedra sobre ladrillo</b><span>5,4 : 1</span></div>
+    <div class="combo" style="background:#EFEDE6;color:#1B2430;box-shadow:inset 0 0 0 3px var(--linea)"><b>Tinta sobre piedra</b><span>13,4 : 1</span></div>
+    <div class="combo" style="background:#EFEDE6;color:#A63D2F;box-shadow:inset 0 0 0 3px var(--linea)"><b>Ladrillo sobre piedra</b><span>5,4 : 1 · solo énfasis</span></div>
+    <div class="combo" style="background:#4B6858;color:#EFEDE6"><b>Piedra sobre musgo</b><span>5,2 : 1</span></div>
+    <div class="combo" style="background:#1B2430;color:#EFEDE6"><b>Piedra sobre tinta</b><span>13,4 : 1</span></div>
+    <div class="combo" style="background:#1B2430;color:#E0806C"><b>Ladrillo claro sobre tinta</b><span>#E0806C · 5,6 : 1</span></div>
+    <div class="combo no" style="background:#A63D2F;color:#1B2430"><b>Tinta sobre ladrillo</b><span>2,5 : 1 · no se lee</span></div>
+    <div class="combo no" style="background:linear-gradient(90deg,#A63D2F 50%,#4B6858 50%);color:#EFEDE6"><b>Ladrillo junto a musgo</b><span>1,0 : 1 · se funden</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="rotulo"><b>Cómo se ve crim.data</b><span>y lo que dejamos atrás del primer borrador</span></div>
+  <div class="reglas">
+    <div class="regla si">
+      <h3>Sí</h3>
+      <ul>
+        <li>Letra grotesca y grande: el título se lee desde la miniatura.</li>
+        <li>Colores planos de la paleta, sin degradados ni sombras.</li>
+        <li>Un dato destacado por lámina, en ladrillo; el resto en gris.</li>
+        <li>Cada post numerado como evidencia: EXH. 000, 001, 002…</li>
+        <li>Fuente citada al pie de la lámina que usa el dato.</li>
+      </ul>
+    </div>
+    <div class="regla no-hacer">
+      <h3>No</h3>
+      <ul>
+        <li>Títulos con serifa tipo editorial o máquina de escribir.</li>
+        <li>Etiquetas en letra monoespaciada dentro de recuadros.</li>
+        <li>Texto chico arriba y media lámina vacía abajo.</li>
+        <li>Texto en tinta sobre ladrillo, o ladrillo al lado de musgo.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="pie">
+  <span class="marca"><i></i></span>crim.data<span class="der">Tinta · Piedra · Ladrillo · Musgo</span>
+</footer>
+
+</body>
+</html>

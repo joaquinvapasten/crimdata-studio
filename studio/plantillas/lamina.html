@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>{{ pub.id }}</title>
+<style>
+@font-face { font-family: "Archivo"; src: url("{{ fuentes }}/Archivo.ttf") format("truetype"); font-weight: 100 900; font-stretch: 62% 125%; }
+@font-face { font-family: "Bricolage Grotesque"; src: url("{{ fuentes }}/BricolageGrotesque.ttf") format("truetype"); font-weight: 200 800; font-stretch: 75% 100%; }
+:root { --W: {{ pub.ancho }}px; --H: {{ pub.alto }}px; --monograma: url("{{ monograma }}"); }
+{{ css }}
+</style>
+</head>
+<body class="estilo-{{ pub.estilo }}">
+{% set total = pub.laminas | length %}
+{% for l in pub.laminas %}
+<section class="lamina tipo-{{ l.tipo }} fondo-{{ l.fondo }}{% if loop.first %} primera{% endif %}{% if loop.last %} ultima{% endif %}" data-n="{{ loop.index }}" data-total="{{ total }}">
+  <header class="cabecera">
+    {% if l.etiqueta %}<span class="etiqueta">{{ l.etiqueta | safe }}</span>{% endif %}
+    {% if total > 1 %}<span class="folio"><b>{{ loop.index }}</b><span>/{{ total }}</span></span>{% endif %}
+  </header>
+  <main class="cuerpo">
+    {{ l.html | safe }}
+    {% if l.nota %}<p class="nota">{{ l.nota | safe }}</p>{% endif %}
+  </main>
+  <footer class="pie">
+    {% if l.fuente %}<p class="fuente"><b>Fuente:</b> {{ l.fuente | safe }}</p>{% endif %}
+    <div class="firma">
+      <span class="marca"><i></i></span>
+      <span class="usuario">crim.data</span>
+      {% if pub.exh %}<span class="exh">EXH. {{ pub.exh }}</span>{% endif %}
+      {% if l.tipo == "portada" and total > 1 %}<span class="desliza">Desliza →</span>{% endif %}
+    </div>
+  </footer>
+</section>
+{% endfor %}
+<script>window.GRAFICOS = {{ graficos | tojson }};</script>
+<script>{{ js }}</script>
+</body>
+</html>

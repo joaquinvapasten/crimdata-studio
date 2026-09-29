@@ -1,0 +1,124 @@
+/* crim.data — base común a todos los estilos: paleta, fondos y piezas de contenido.
+   Cada estilo (estilos/*.css) define tipografía, composición y tamaños.
+   Medidas pensadas para 1080 px de ancho. --k achica el texto cuando no cabe. */
+
+:root {
+  --tinta: #1B2430;
+  --piedra: #EFEDE6;
+  --ladrillo: #A63D2F;
+  --musgo: #4B6858;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #111; }
+body { width: var(--W); }
+
+/* ── fondos ───────────────────────────────────────────────────── */
+
+.fondo-piedra {
+  --fondo: var(--piedra);
+  --t1: #1B2430; --t2: #4A505B; --t3: #8B877F;
+  --acento: var(--ladrillo); --acento-t: var(--piedra);
+  --enfasis: var(--ladrillo);
+  --bloque: var(--ladrillo); --bloque-t: var(--piedra);
+  --marca-fondo: var(--ladrillo); --marca-tinta: var(--piedra);
+  --s1: #A63D2F; --s2: #1B2430; --s3: #4B6858; --s4: #9A968E;
+  --s0: #D3CEC3; --gris: #8F8B82; --grilla: rgba(27, 36, 48, .09);
+}
+.fondo-tinta {
+  --fondo: var(--tinta);
+  --t1: #EFEDE6; --t2: rgba(239, 237, 230, .74); --t3: rgba(239, 237, 230, .46);
+  --acento: var(--ladrillo); --acento-t: var(--piedra);
+  --enfasis: #E0806C;
+  --bloque: var(--ladrillo); --bloque-t: var(--piedra);
+  --marca-fondo: var(--ladrillo); --marca-tinta: var(--piedra);
+  --s1: #D9725E; --s2: #EFEDE6; --s3: #86AD98; --s4: #8C8A86;
+  --s0: rgba(239, 237, 230, .2); --gris: rgba(239, 237, 230, .5); --grilla: rgba(239, 237, 230, .09);
+}
+.fondo-ladrillo {
+  --fondo: var(--ladrillo);
+  --t1: #EFEDE6; --t2: rgba(239, 237, 230, .86); --t3: rgba(239, 237, 230, .64);
+  --acento: var(--piedra); --acento-t: var(--ladrillo);
+  --enfasis: #FFFFFF;
+  --bloque: var(--tinta); --bloque-t: var(--piedra);
+  --marca-fondo: var(--piedra); --marca-tinta: var(--ladrillo);
+  --s1: #EFEDE6; --s2: #1B2430; --s3: #E3B9A9; --s4: #6E2217;
+  --s0: rgba(239, 237, 230, .3); --gris: rgba(239, 237, 230, .6); --grilla: rgba(239, 237, 230, .14);
+}
+.fondo-musgo {
+  --fondo: var(--musgo);
+  --t1: #EFEDE6; --t2: rgba(239, 237, 230, .86); --t3: rgba(239, 237, 230, .64);
+  --acento: var(--piedra); --acento-t: var(--musgo);
+  --enfasis: #FFFFFF;
+  --bloque: var(--tinta); --bloque-t: var(--piedra);
+  --marca-fondo: var(--piedra); --marca-tinta: var(--musgo);
+  --s1: #EFEDE6; --s2: #1B2430; --s3: #B9CDBF; --s4: #2C4034;
+  --s0: rgba(239, 237, 230, .3); --gris: rgba(239, 237, 230, .6); --grilla: rgba(239, 237, 230, .14);
+}
+
+/* ── lámina ───────────────────────────────────────────────────── */
+
+.lamina {
+  --k: 1;
+  position: relative;
+  width: var(--W);
+  height: var(--H);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--fondo);
+  color: var(--t1);
+  font-kerning: normal;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+.cabecera, .firma { display: flex; align-items: center; }
+.cuerpo { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.cuerpo > :last-child { margin-bottom: 0 !important; }
+.pie { flex: none; }
+.firma .exh, .firma .desliza { margin-left: auto; }
+.firma .exh + .desliza { margin-left: 28px; }
+
+.marca {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--marca-fondo);
+}
+.marca i {
+  display: block;
+  width: 31px;
+  height: 12px;
+  background: var(--marca-tinta);
+  -webkit-mask: var(--monograma) center / contain no-repeat;
+  mask: var(--monograma) center / contain no-repeat;
+}
+
+/* ── piezas de contenido ──────────────────────────────────────── */
+
+.titulo { text-wrap: balance; }
+.cuerpo p { text-wrap: pretty; }
+strong { font-weight: 700; color: var(--enfasis); }
+em { font-style: italic; }
+mark { color: inherit; background: color-mix(in srgb, var(--acento) 26%, transparent); padding: 0 .1em; border-radius: .12em; }
+u { text-decoration-thickness: 2px; text-underline-offset: .16em; }
+code { font-size: .9em; }
+
+.lista { list-style: none; counter-reset: n; }
+.lista li { position: relative; text-wrap: pretty; }
+ol.lista li::before { counter-increment: n; content: counter(n); }
+
+.tabla { width: 100%; border-collapse: collapse; }
+.tabla th { text-align: left; }
+.tabla .num { text-align: right; font-variant-numeric: tabular-nums; }
+.tabla th + th, .tabla td + td { padding-left: 24px; }
+
+.imagen img { display: block; max-width: 100%; object-fit: cover; }
+
+.grafico { flex: 1 1 auto; min-height: 0; position: relative; }
+.grafico svg { position: absolute; inset: 0; overflow: visible; }
+.g-eje, .g-valor { font-variant-numeric: tabular-nums; }

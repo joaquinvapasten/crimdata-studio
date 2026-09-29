@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>crim.data studio</title>
+<style>
+@font-face { font-family: "Archivo"; src: url("/marca/fuentes/Archivo.ttf"); font-weight: 100 900; font-stretch: 62% 125%; }
+
+:root {
+  --tinta: #1B2430; --piedra: #EFEDE6; --ladrillo: #A63D2F; --musgo: #4B6858;
+  --fondo: #141A23; --superficie: #1B2430; --linea: rgba(239, 237, 230, .1);
+  --t1: #EFEDE6; --t2: rgba(239, 237, 230, .68); --t3: rgba(239, 237, 230, .42);
+  --sans: "Archivo", system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--fondo); color: var(--t1); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+body { min-height: 100vh; padding: 0 clamp(16px, 4vw, 56px) 80px; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+.barra {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; align-items: center; gap: 14px;
+  padding: 22px 0;
+  background: linear-gradient(var(--fondo) 75%, transparent);
+}
+.marca { width: 34px; height: 34px; border-radius: 50%; background: var(--ladrillo); display: grid; place-items: center; }
+.marca i { width: 20px; height: 8px; background: var(--piedra); -webkit-mask: url("/marca/monograma.png") center / contain no-repeat; mask: url("/marca/monograma.png") center / contain no-repeat; }
+.nombre { font: 700 17px var(--sans); font-stretch: 125%; letter-spacing: -.01em; }
+.nombre span { color: var(--t3); font-weight: 500; }
+.estado { margin-left: auto; display: flex; align-items: center; gap: 10px; font: 500 14px var(--sans); color: var(--t3); }
+.punto { width: 8px; height: 8px; border-radius: 50%; background: var(--musgo); box-shadow: 0 0 0 4px rgba(75, 104, 88, .25); }
+.compilando .punto { background: #D9A441; box-shadow: 0 0 0 4px rgba(217, 164, 65, .25); animation: latido 1s infinite; }
+.desconectado .punto { background: var(--ladrillo); box-shadow: 0 0 0 4px rgba(166, 61, 47, .3); }
+@keyframes latido { 50% { opacity: .35; } }
+
+.seccion { margin: 40px 0 16px; font: 800 30px var(--sans); font-stretch: 125%; letter-spacing: -.03em; color: var(--t1); }
+
+.pub { margin-bottom: 18px; padding: 24px; border-radius: 22px; background: rgba(239, 237, 230, .04); }
+.cab { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+.exh { padding: 5px 12px; border-radius: 999px; background: var(--ladrillo); font: 700 14px var(--sans); color: var(--piedra); }
+.titulo { font: 800 26px/1.1 var(--sans); font-stretch: 112%; letter-spacing: -.025em; }
+.meta { font: 500 14px var(--sans); color: var(--t3); }
+.acciones { margin-left: auto; display: flex; gap: 6px; }
+.acciones button, .copiar {
+  padding: 7px 12px; border-radius: 999px;
+  font: 600 13px var(--sans); color: var(--t2);
+  background: rgba(239, 237, 230, .07); transition: .15s;
+}
+.acciones button:hover, .copiar:hover { color: var(--t1); background: rgba(239, 237, 230, .14); }
+
+.tira { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: rgba(239,237,230,.2) transparent; }
+.tira figure { flex: none; scroll-snap-align: start; }
+.tira img {
+  display: block; width: 260px; height: auto; border-radius: 12px;
+  background: var(--superficie); cursor: zoom-in;
+  box-shadow: 0 1px 0 rgba(255,255,255,.04), 0 14px 30px -18px rgba(0,0,0,.8);
+  transition: transform .2s;
+}
+.tira img:hover { transform: translateY(-3px); }
+.tira figcaption { margin-top: 8px; font: 600 13px var(--sans); color: var(--t3); }
+.variante + .variante { margin-top: 18px; }
+.variante h3 { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; font: 700 13px var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--t2); }
+.variante h3 button { padding: 4px 10px; border-radius: 999px; font: 600 12px var(--sans); letter-spacing: 0; text-transform: none; color: var(--t3); background: rgba(239, 237, 230, .06); }
+.variante h3 button:hover { color: var(--t1); background: rgba(239, 237, 230, .14); }
+
+.caption { margin-top: 18px; max-width: 760px; padding: 18px 20px; border-radius: 16px; background: rgba(239, 237, 230, .05); }
+.caption p { font-size: 15px; line-height: 1.55; color: var(--t2); white-space: pre-wrap; }
+.caption .tags { margin-top: 10px; color: #86AD98; }
+.caption .copiar { margin-top: 14px; }
+
+.aviso, .error { margin-top: 14px; max-width: 760px; padding: 12px 16px; border-radius: 12px; font: 500 14px/1.55 var(--sans); white-space: pre-wrap; }
+.aviso { background: rgba(217, 164, 65, .1); color: #E6C27A; }
+.error { background: rgba(166, 61, 47, .18); color: #F0A393; }
+
+.vacio { margin-top: 20vh; text-align: center; color: var(--t3); font: 500 16px/1.7 var(--sans); }
+.vacio code { color: var(--t1); }
+
+/* visor */
+.visor { position: fixed; inset: 0; z-index: 10; display: none; place-items: center; background: rgba(10, 13, 18, .92); backdrop-filter: blur(6px); }
+.visor.abierto { display: grid; }
+.visor img { max-width: 92vw; max-height: 88vh; border-radius: 8px; box-shadow: 0 30px 80px -20px #000; }
+.visor .pie { position: fixed; bottom: 22px; left: 0; right: 0; text-align: center; font: 600 14px var(--sans); color: var(--t3); }
+.visor .nav { position: fixed; top: 50%; transform: translateY(-50%); font-size: 30px; color: var(--t2); padding: 20px; }
+.visor .nav:hover { color: var(--t1); }
+.visor .ant { left: 10px; } .visor .sig { right: 10px; }
+</style>
+</head>
+<body>
+<header class="barra">
+  <span class="marca"><i></i></span>
+  <span class="nombre">crim.data <span>studio</span></span>
+  <span class="estado" id="estado"><span class="punto"></span><span id="estado-txt">conectando…</span></span>
+</header>
+<main id="app"></main>
+<div class="visor" id="visor">
+  <button class="nav ant" id="ant" aria-label="Anterior">←</button>
+  <img id="visor-img" alt="">
+  <button class="nav sig" id="sig" aria-label="Siguiente">→</button>
+  <div class="pie" id="visor-pie"></div>
+</div>
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+let version = -1, datos = null, visor = { ruta: "", v: 0, i: 0 };
+const carpetaDe = (png) => png.replace(/\/[^/]+$/, "");
+const variantes = (p) => (p.variantes && p.variantes.length ? p.variantes : [{ estilo: p.estilo, pngs: p.pngs }]);
+
+function tarjeta(p) {
+  const vs = variantes(p);
+  const n = vs[0].pngs.length;
+  const titulo = p.clase === "post"
+    ? (p.exh ? `<span class="exh">EXH. ${esc(p.exh)}</span>` : "") + `<span class="titulo">${esc(p.tema || p.id)}</span>`
+    : `<span class="titulo">${esc(p.id)}</span>`;
+  const meta = p.error ? "" : `<span class="meta">${n} lámina${n === 1 ? "" : "s"} · ${esc(p.estilo)} · ${esc(p.formato)}</span>`;
+  const tira = (v, vi) => `<div class="tira">${v.pngs.map((src, i) => `
+    <figure><img src="/${esc(src)}?v=${version}" data-pub="${esc(p.ruta)}" data-v="${vi}" data-i="${i}" loading="lazy" alt="Lámina ${i + 1}">
+    ${n > 1 ? `<figcaption>${String(i + 1).padStart(2, "0")}</figcaption>` : ""}</figure>`).join("")}</div>`;
+  const imgs = vs.length > 1
+    ? vs.map((v, vi) => `<div class="variante"><h3>${esc(v.estilo)}${v.pngs.length
+        ? `<button data-post="/abrir" data-ruta="${esc(carpetaDe(v.pngs[0]))}">Abrir carpeta</button>` : ""}</h3>${tira(v, vi)}</div>`).join("")
+    : tira(vs[0], 0);
+  const caption = (p.texto || p.hashtags) ? `
+    <div class="caption"><p>${esc(p.texto)}</p>${p.hashtags ? `<p class="tags">${esc(p.hashtags)}</p>` : ""}
+    <button class="copiar" data-copiar="${esc([p.texto, p.hashtags].filter(Boolean).join("\n\n"))}">Copiar texto</button></div>` : "";
+  const carpeta = vs.length === 1 && p.pngs.length ? carpetaDe(p.pngs[0]) : "";
+  return `<section class="pub">
+    <div class="cab">${titulo}${meta}
+      <span class="acciones">
+        <button data-post="/editar" data-ruta="${esc(p.ruta)}">Editar</button>
+        ${carpeta ? `<button data-post="/abrir" data-ruta="${esc(carpeta)}">Abrir carpeta</button>` : ""}
+      </span>
+    </div>
+    ${p.error ? `<div class="error">${esc(p.error)}</div>` : imgs}
+    ${(p.avisos || []).map((a) => `<div class="aviso">⚠ ${esc(a)}</div>`).join("")}
+    ${caption}
+  </section>`;
+}
+
+function pintar() {
+  const pubs = datos.publicaciones;
+  const posts = pubs.filter((p) => p.clase === "post"), graf = pubs.filter((p) => p.clase !== "post");
+  if (!pubs.length) {
+    $("#app").innerHTML = `<p class="vacio">Todavía no hay nada.<br>Crea un post con <code>python -m studio nuevo "Título"</code></p>`;
+    return;
+  }
+  $("#app").innerHTML =
+    (posts.length ? `<h2 class="seccion">Carruseles</h2>` + posts.map(tarjeta).join("") : "") +
+    (graf.length ? `<h2 class="seccion">Gráficos</h2>` + graf.map(tarjeta).join("") : "");
+}
+
+async function consultar() {
+  try {
+    const r = await fetch("/estado.json", { cache: "no-store" });
+    const d = await r.json();
+    const e = $("#estado");
+    e.className = "estado" + (d.compilando ? " compilando" : "");
+    $("#estado-txt").textContent = d.compilando ? "compilando…" : d.hora ? `al día · ${d.hora}` : "listo";
+    if (d.version !== version && !d.compilando) {
+      version = d.version; datos = d;
+      const scroll = [...document.querySelectorAll(".tira")].map((t) => t.scrollLeft);
+      pintar();
+      document.querySelectorAll(".tira").forEach((t, i) => (t.scrollLeft = scroll[i] || 0));
+      if ($("#visor").classList.contains("abierto")) mostrar(visor.i);
+    }
+  } catch {
+    $("#estado").className = "estado desconectado";
+    $("#estado-txt").textContent = "sin conexión (¿cerraste la terminal?)";
+  }
+  setTimeout(consultar, 700);
+}
+
+function mostrar(i) {
+  const pub = datos.publicaciones.find((p) => p.ruta === visor.ruta);
+  const v = pub && variantes(pub)[visor.v];
+  if (!v || !v.pngs.length) return cerrar();
+  const pngs = v.pngs;
+  visor.i = (i + pngs.length) % pngs.length;
+  $("#visor-img").src = `/${pngs[visor.i]}?v=${version}`;
+  $("#visor-pie").textContent = (variantes(pub).length > 1 ? `${v.estilo} · ` : "") + (pngs.length > 1 ? `${visor.i + 1} / ${pngs.length}` : "");
+  $("#visor").classList.add("abierto");
+}
+function cerrar() { $("#visor").classList.remove("abierto"); }
+
+document.addEventListener("click", async (ev) => {
+  const img = ev.target.closest(".tira img");
+  if (img) { visor.ruta = img.dataset.pub; visor.v = +img.dataset.v || 0; return mostrar(+img.dataset.i); }
+  const b = ev.target.closest("button");
+  if (b?.dataset.copiar !== undefined) {
+    await navigator.clipboard.writeText(b.dataset.copiar);
+    const t = b.textContent; b.textContent = "Copiado ✓"; setTimeout(() => (b.textContent = t), 1400);
+  } else if (b?.dataset.post) {
+    fetch(`${b.dataset.post}?ruta=${encodeURIComponent(b.dataset.ruta)}`, { method: "POST" });
+  } else if (b?.id === "ant") mostrar(visor.i - 1);
+  else if (b?.id === "sig") mostrar(visor.i + 1);
+  else if (ev.target.id === "visor") cerrar();
+});
+document.addEventListener("keydown", (ev) => {
+  if (!$("#visor").classList.contains("abierto")) return;
+  if (ev.key === "Escape") cerrar();
+  if (ev.key === "ArrowLeft") mostrar(visor.i - 1);
+  if (ev.key === "ArrowRight") mostrar(visor.i + 1);
+});
+consultar();
+</script>
+</body>
+</html>

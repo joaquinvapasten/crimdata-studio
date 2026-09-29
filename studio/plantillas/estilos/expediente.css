@@ -1,0 +1,141 @@
+/* EXPEDIENTE — Archivo condensada en mayúsculas, fondo tinta, etiqueta de evidencia
+   y énfasis como tachón de color. Todo cae hacia abajo, como un cartel de documental. */
+
+.lamina {
+  padding: 64px 72px 60px;
+  font-family: "Archivo", sans-serif;
+  --angosta: 62%;
+}
+
+/* etiqueta de evidencia (con su perforación) y folio */
+.cabecera { justify-content: space-between; gap: 24px; }
+.cabecera .etiqueta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 26px 0 50px;
+  border-radius: 10px;
+  background: var(--acento);
+  color: var(--acento-t);
+  font-size: 27px;
+  font-weight: 800;
+  font-stretch: var(--angosta);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.cabecera .etiqueta::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: var(--fondo);
+}
+.folio { font-size: 30px; font-weight: 800; font-stretch: var(--angosta); color: var(--t3); letter-spacing: .02em; }
+.folio b { color: var(--t1); }
+
+/* pie */
+.fuente { margin-bottom: 24px; font-size: 19px; line-height: 1.45; color: var(--t3); font-stretch: 88%; }
+.fuente b { font-weight: 700; color: var(--t2); text-transform: uppercase; letter-spacing: .04em; }
+.firma { gap: 14px; font-size: 27px; font-weight: 800; font-stretch: var(--angosta); text-transform: uppercase; letter-spacing: .03em; }
+.firma .exh, .firma .desliza { color: var(--t3); }
+.lamina:not(.tipo-portada) .firma .desliza { display: none; }
+.tipo-portada .firma .exh { display: none; }
+.tipo-portada .firma .desliza { margin-left: auto; }
+
+/* contenido: abajo, como un cartel */
+.cuerpo { justify-content: flex-end; padding: 48px 0 52px; }
+.titulo {
+  font-weight: 800;
+  font-stretch: var(--angosta);
+  font-size: calc(128px * var(--k));
+  line-height: .9;
+  letter-spacing: -.012em;
+  text-transform: uppercase;
+  margin-bottom: calc(40px * var(--k));
+}
+.cuerpo p { font-size: calc(37px * var(--k)); line-height: 1.38; letter-spacing: -.01em; color: var(--t2); }
+.cuerpo p + p, .cuerpo .lista + p, .cuerpo .tabla + p { margin-top: .7em; }
+.bajada { font-size: calc(46px * var(--k)) !important; line-height: 1.16 !important; font-weight: 700; font-stretch: 80%; color: var(--t1) !important; margin-bottom: calc(28px * var(--k)); }
+.rotulo { font-size: calc(28px * var(--k)) !important; font-weight: 800; font-stretch: var(--angosta); text-transform: uppercase; letter-spacing: .04em; color: var(--enfasis) !important; margin-bottom: calc(16px * var(--k)); }
+
+/* énfasis: tachón de color */
+strong {
+  color: var(--acento-t);
+  background: var(--acento);
+  font-weight: 600;
+  padding: 0 .18em;
+  border-radius: .12em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.fondo-ladrillo strong, .fondo-musgo strong { background: var(--tinta); color: var(--piedra); }
+
+.destacado { margin-top: calc(44px * var(--k)); }
+.destacado p {
+  font-size: calc(46px * var(--k)) !important;
+  line-height: 1.02 !important;
+  font-weight: 800;
+  font-stretch: var(--angosta);
+  text-transform: uppercase;
+  letter-spacing: .005em;
+  color: var(--t1) !important;
+}
+
+.lista li { font-size: calc(36px * var(--k)); line-height: 1.34; color: var(--t2); padding-left: 60px; margin-bottom: .5em; }
+.lista li::before { content: "×"; position: absolute; left: 4px; top: -.08em; font-size: 1.2em; font-weight: 800; color: var(--enfasis); }
+ol.lista li::before { content: counter(n, decimal-leading-zero); top: .05em; font-size: .9em; font-stretch: var(--angosta); }
+
+.tabla { font-size: calc(30px * var(--k)); color: var(--t2); }
+.tabla th { padding: 0 0 16px; font-size: calc(24px * var(--k)); font-weight: 800; font-stretch: var(--angosta); text-transform: uppercase; letter-spacing: .04em; color: var(--t3); }
+.tabla td { padding: calc(18px * var(--k)) 0; }
+.tabla td:first-child { color: var(--t1); font-weight: 600; }
+.tabla tbody tr:nth-child(odd) td { background: color-mix(in srgb, var(--t1) 6%, transparent); }
+.tabla td:first-child { padding-left: 16px; }
+.tabla td:last-child { padding-right: 16px; }
+.tabla th:first-child { padding-left: 16px; }
+.tabla th:last-child { padding-right: 16px; }
+
+.imagen img { border-radius: 10px; max-height: calc(600px * var(--k)); filter: grayscale(1) contrast(1.05); }
+.nota { margin-top: calc(26px * var(--k)); font-size: 21px !important; color: var(--t3) !important; }
+
+/* portada: título gigante */
+.tipo-portada .titulo { font-size: calc(172px * var(--k)); line-height: .86; letter-spacing: -.015em; }
+.tipo-portada .cuerpo p { font-size: calc(38px * var(--k)); }
+.tipo-portada .folio { display: none; }
+
+/* cifra */
+.tipo-cifra .titulo { font-size: calc(330px * var(--k)); line-height: .82; white-space: nowrap; text-wrap: nowrap; color: var(--enfasis); letter-spacing: -.02em; margin-bottom: calc(30px * var(--k)); }
+.tipo-cifra .cuerpo p { font-size: calc(46px * var(--k)); line-height: 1.12; color: var(--t1); font-weight: 700; font-stretch: 80%; }
+.tipo-cifra .cuerpo p + p { font-size: calc(32px * var(--k)); color: var(--t2); font-weight: 400; font-stretch: 100%; }
+
+/* cita */
+.tipo-cita .destacado { margin: 0; }
+.tipo-cita .destacado p { font-size: calc(82px * var(--k)) !important; line-height: .94 !important; text-wrap: balance; }
+.tipo-cita .destacado p::before { content: "«"; color: var(--enfasis); }
+.tipo-cita .destacado p::after { content: "»"; color: var(--enfasis); }
+.tipo-cita .destacado + p { margin-top: calc(36px * var(--k)); font-size: calc(28px * var(--k)); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--t3); }
+
+/* gráfico: el título arriba */
+.tipo-grafico .cuerpo { justify-content: flex-start; padding-top: 52px; padding-bottom: 28px; }
+.tipo-grafico .titulo { font-size: calc(80px * var(--k)); margin-bottom: calc(14px * var(--k)); }
+.tipo-grafico .cuerpo p { font-size: calc(30px * var(--k)); }
+.grafico { margin-top: calc(44px * var(--k)); }
+
+/* cierre */
+.tipo-cierre .destacado p { color: var(--t1) !important; }
+
+/* textos de los gráficos */
+.g-eje { font: 600 26px "Archivo"; font-stretch: 75%; fill: var(--t3); }
+.g-cat { font: 500 27px "Archivo"; fill: var(--t2); }
+.g-cat.fuerte { fill: var(--t1); font-weight: 700; }
+.g-valor { font: 700 30px "Archivo"; font-stretch: 75%; fill: var(--t2); }
+.g-valor.fuerte { fill: var(--t1); font-weight: 800; }
+.g-serie { font: 700 27px "Archivo"; font-stretch: 75%; fill: var(--t1); text-transform: uppercase; letter-spacing: .03em; }
+.g-anota { font: 700 22px "Archivo"; font-stretch: 75%; fill: var(--t3); text-transform: uppercase; letter-spacing: .05em; }
+.g-grande { font: 800 150px "Archivo"; font-stretch: 62%; fill: var(--t1); }
