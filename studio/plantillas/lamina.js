@@ -282,7 +282,9 @@
     let y = H / 2 - (cats.length * bloque) / 2 + 100;
     cats.forEach((cat, j) => {
       nodo("rect", { x: x0, y: y - 78, width: 24, height: 24, rx: 5, fill: colorCat[j] }, svg);
-      texto(svg, x0 + 42, y, fmt(g, cat.v), "g-grande");
+      const n = texto(svg, x0 + 42, y, fmt(g, cat.v), "g-grande");
+      // si la cifra no cabe (p. ej. con decimales), se achica hasta el borde
+      if (ancho(n) > W - x0 - 42) n.style.fontSize = `${(parseFloat(getComputedStyle(n).fontSize) * (W - x0 - 42)) / ancho(n)}px`;
       const t = texto(svg, x0, y + 52, cat.nombre, "g-cat");
       if (ancho(t) > W - x0) t.setAttribute("textLength", W - x0), t.setAttribute("lengthAdjust", "spacingAndGlyphs");
       y += bloque;
