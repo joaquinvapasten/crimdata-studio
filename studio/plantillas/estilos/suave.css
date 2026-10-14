@@ -24,7 +24,7 @@
   white-space: nowrap;
 }
 .cabecera .etiqueta { background: var(--tinta); color: var(--piedra); }
-.folio { margin-left: auto; background: #E2DED4; color: #6E6A62; font-variant-numeric: tabular-nums; }
+.folio { margin-left: auto; background: #E2DED4; color: #625E57; font-variant-numeric: tabular-nums; }
 .folio b { color: var(--tinta); font-weight: 700; }
 
 /* tarjeta principal */
@@ -85,7 +85,7 @@ ol.lista li::after { display: none; }
 .firma .marca { background: var(--ladrillo); }
 .firma .marca i { background: var(--piedra); }
 .firma .exh { display: none; }
-.firma .desliza { margin-left: 18px; color: #6E6A62; font-weight: 600; }
+.firma .desliza { margin-left: 18px; color: #625E57; font-weight: 600; }
 .fuente {
   flex: 1;
   display: flex;
@@ -95,7 +95,7 @@ ol.lista li::after { display: none; }
   background: #E2DED4;
   font-size: 18px;
   line-height: 1.4;
-  color: #6E6A62;
+  color: #625E57;
 }
 .fuente b { font-weight: 700; color: var(--tinta); margin-right: .4em; }
 

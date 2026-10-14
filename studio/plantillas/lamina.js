@@ -414,6 +414,85 @@
     else if (k < 0.8) avisos.push(`Lámina ${lam.dataset.n}: hay mucho texto (se achicó a ${Math.round(k * 100)} %).`);
   }
 
+  // ── contraste (WCAG 2.1) ──────────────────────────────────────
+  // Mide cada texto contra el color que tiene detrás. Mínimo 4,5:1; 3:1 si la letra es grande.
+  const rgba = (s) => {
+    const m = s.match(/rgba?\(([^)]+)\)/);
+    if (!m) return null;
+    const [r, g, b, a = 1] = m[1].split(/[\s,/]+/).filter(Boolean).map(Number);
+    return [r, g, b, a];
+  };
+  const sobre = (c, f) => c.slice(0, 3).map((v, i) => v * c[3] + f[i] * (1 - c[3]));
+  const luz = (c) => {
+    const [r, g, b] = c.map((v) => (v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  function fondoDe(el) {
+    const capas = [];
+    for (let e = el; e && e.nodeType === 1; e = e.parentElement) {
+      const cs = getComputedStyle(e);
+      if (cs.backgroundImage !== "none") return null; // degradado o imagen: no se puede medir
+      const c = rgba(cs.backgroundColor);
+      if (c && c[3] > 0) { capas.push(c); if (c[3] >= 1) break; }
+    }
+    return capas.reduceRight((f, c) => sobre(c, f), [255, 255, 255]);
+  }
+  const NOMBRE = { titulo: "el título", bajada: "la bajada", rotulo: "el rótulo", etiqueta: "la etiqueta",
+                   nota: "la nota", destacado: "el destacado", fuente: "la fuente" };
+  function contraste() {
+    const bajos = new Map();
+    const sel = ".titulo, .bajada, .rotulo, .cuerpo p, .lista li, .etiqueta, .nota, .fuente, strong, mark, em";
+    for (const lam of document.querySelectorAll(".lamina"))
+      for (const el of lam.querySelectorAll(sel)) {
+        if (!el.textContent.trim() || el.closest("svg")) continue;
+        const cs = getComputedStyle(el);
+        const f = fondoDe(el), c = rgba(cs.color);
+        if (!f || !c) continue;
+        const [a, b] = [luz(sobre(c, f)), luz(f)].sort((x, y) => y - x);
+        const ratio = (a + 0.05) / (b + 0.05);
+        const px = parseFloat(cs.fontSize), grande = px >= 24 || (px >= 18.66 && +cs.fontWeight >= 700);
+        if (ratio >= (grande ? 3 : 4.5)) continue;
+        const parte = el.closest(".titulo, .bajada, .rotulo, .etiqueta, .nota, .destacado, .fuente");
+        const clave = `${parte ? NOMBRE[[...parte.classList].find((k) => NOMBRE[k])] : "el texto"} (${nf(1).format(ratio)}:1, mínimo ${grande ? 3 : "4,5"}:1)`;
+        if (!bajos.has(clave)) bajos.set(clave, new Set());
+        bajos.get(clave).add(lam.dataset.n);
+      }
+    for (const [clave, ns] of bajos)
+      avisos.push(`Lámina${ns.size > 1 ? "s" : ""} ${[...ns].join(", ")}: contraste bajo en ${clave}.`);
+  }
+
+  // ── texto alternativo ─────────────────────────────────────────
+  // Lo que dice cada lámina en texto plano, con los datos de sus gráficos, para pegarlo en Instagram.
+  function describir(g) {
+    const nombre = { barras: "Gráfico de barras", barras_h: "Gráfico de barras", lineas: "Gráfico de líneas",
+                     proporcion: "Gráfico de proporción", comparacion: "Gráfico de comparación",
+                     intervalos: "Gráfico de estimaciones con intervalos de confianza" }[g.tipo];
+    const pares = (s) => g.etiquetas.map((e, i) => `${e}: ${fmt(g, s.valores[i])}`).filter((x) => !x.endsWith(": "));
+    if (g.tipo === "proporcion")
+      return `${nombre}: ` + g.etiquetas.map((e, i) => `${fmt(g, g.series.length > 1 ? g.series[i]?.valores[0] : g.series[0].valores[i])} ${e}`).join("; ") + ".";
+    if (g.tipo === "intervalos")
+      return `${nombre}. ` + g.series.map((s) => (s.nombre ? `${s.nombre}: ` : "") + g.etiquetas.map((e, i) =>
+        `${e}: ${fmt(g, s.valores[i])} (entre ${fmt(g, s.inf[i])} y ${fmt(g, s.sup[i])})`).join("; ")).join(". ") + ".";
+    if (g.series.length === 1) return `${nombre}. ${pares(g.series[0]).join("; ")}.`;
+    return `${nombre}. ` + g.series.map((s) => `${s.nombre}: ${pares(s).join("; ")}`).join(". ") + ".";
+  }
+  function textoAlternativo() {
+    const plano = (el) => el.innerText.replace(/\s*\n+\s*/g, " ").replace(/\s{2,}/g, " ").trim();
+    const punto = (s) => (/[.!?…:»”)]$/.test(s) ? s : s + ".");
+    window.__alt = [...document.querySelectorAll(".lamina")].map((lam) => {
+      const partes = [];
+      for (const el of lam.querySelector(".cuerpo").children) {
+        if (el.classList.contains("grafico")) partes.push(describir(window.GRAFICOS[+el.dataset.i]));
+        else if (el.matches("ol, ul"))
+          partes.push([...el.children].map((li, i) => (el.tagName === "OL" ? `${i + 1}. ` : "") + punto(plano(li))).join(" "));
+        else if (el.innerText.trim()) partes.push(punto(plano(el)));
+      }
+      const fuente = lam.querySelector(".fuente");
+      if (fuente) partes.push(punto(plano(fuente)));
+      return partes.join(" ");
+    });
+  }
+
   async function principal() {
     await document.fonts.ready;
     for (const lam of document.querySelectorAll(".lamina")) ajustar(lam);
@@ -426,6 +505,8 @@
         avisos.push(`Lámina ${lam.dataset.n}: no pude dibujar el gráfico (${e.message})`);
       }
     }
+    contraste();
+    textoAlternativo();
     window.__listo = true;
   }
   principal();

@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import base64
+import html
 import os
+import re
 import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -24,6 +26,43 @@ _jinja = Environment(loader=FileSystemLoader(PLANTILLAS), autoescape=False)
 class Resultado:
     pngs: list[Path] = field(default_factory=list)
     avisos: list[str] = field(default_factory=list)
+    pdf: Path | None = None
+
+
+def texto_plano(s: str) -> str:
+    return html.unescape(re.sub(r"<[^>]+>", "", s.replace("<br>", " "))).strip()
+
+
+def fuentes_de(pub: Publicacion) -> list[str]:
+    """Todas las fuentes citadas al pie de las láminas, sin repetir (separadas por «;»)."""
+    vistas: dict[str, None] = {}
+    for lam in pub.laminas:
+        for f in texto_plano(lam.fuente).split(";"):
+            f = f.strip().rstrip(".").strip()
+            if f:
+                vistas.setdefault(f[0].upper() + f[1:], None)
+    return list(vistas)
+
+
+def escribir_texto(pub: Publicacion, alt: list[str], destino: Path) -> None:
+    """texto.txt: caption y hashtags, el texto alternativo de cada lámina y la lista de fuentes."""
+    raya = "─" * 40
+    caption = pub.texto or "(Falta el caption: va en «texto:» en el encabezado del post.)"
+    partes = [x for x in (caption, pub.hashtags) if x]
+    partes += [raya + "\nTEXTO ALTERNATIVO · en Instagram va en «Configuración avanzada», uno por imagen",
+               "\n\n".join(f"{i:02d}. {a}" for i, a in enumerate(alt, 1))]
+    if fuentes := fuentes_de(pub):
+        partes += [raya + "\nFUENTES", "\n".join(f"- {f}." for f in fuentes)]
+    (destino / "texto.txt").write_text("\n\n".join(partes) + "\n", encoding="utf-8")
+
+
+def escribir_pdf(pngs: list[Path], pdf: Path) -> Path:
+    """Junta las láminas en un PDF, una por página (para el revisor o LinkedIn)."""
+    from PIL import Image
+
+    paginas = [Image.open(p).convert("RGB") for p in pngs]
+    paginas[0].save(pdf, save_all=True, append_images=paginas[1:], resolution=144, quality=92)
+    return pdf
 
 
 def carpeta_de(pub: Publicacion) -> Path:
@@ -130,9 +169,12 @@ class Motor:
                 laminas.nth(i).screenshot(path=str(png), animations="disabled")
                 res.pngs.append(png)
 
-            if pub.clase == "post" and (pub.texto or pub.hashtags):
-                (destino / "texto.txt").write_text(
-                    "\n\n".join(x for x in (pub.texto, pub.hashtags) if x) + "\n", encoding="utf-8")
+            if pub.clase == "post":
+                escribir_texto(pub, pagina.evaluate("window.__alt"), destino)
+                try:
+                    res.pdf = escribir_pdf(res.pngs, destino / f"{pub.id}.pdf")
+                except ImportError:
+                    res.avisos.append("no hice el PDF: falta Pillow (pip install -r requirements.txt)")
             return res
         finally:
             pagina.close()

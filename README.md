@@ -44,7 +44,8 @@ En modo en vivo, **cada vez que guardas** un `.md` se recompila y la galería de
 Los PNG quedan en `salida/`, **una carpeta por estilo** con todos los posts adentro:
 
 ```
-salida/poster/000-presentacion/01.png … 06.png  + texto.txt (caption y hashtags)
+salida/poster/000-presentacion/01.png … 06.png  + 000-presentacion.pdf (todas las láminas)
+                                                 + texto.txt (caption, hashtags, texto alternativo y fuentes)
 salida/poster/001-gobernanza-criminal/…
 salida/expediente/000-presentacion/…
 salida/suave/000-presentacion/…
@@ -132,7 +133,7 @@ Casi nunca hace falta `tipo:`: la primera lámina es la **portada**, una lámina
 
 Formatos: `4:5` (1080×1350, el recomendado para carruseles) · `1:1` · `3:4` · `9:16` (historias).
 
-El numerado `02 / 06`, el `EXH. 000`, la firma y el ajuste de tamaño son automáticos: si un texto no cabe, la letra se achica sola y, si se achica demasiado, la galería te avisa.
+El numerado `02 / 06`, el `EXH. 000`, la firma y el ajuste de tamaño son automáticos: si un texto no cabe, la letra se achica sola y, si se achica demasiado, la galería te avisa. También avisa si algún texto tiene poco contraste con su fondo (menos de 4,5:1, o 3:1 si la letra es grande). Los avisos salen además en el índice de la rama `png`, bajo cada post.
 
 `posts/muestrario.md` tiene un ejemplo de cada tipo de lámina. Úsalo de referencia y bórralo cuando quieras.
 

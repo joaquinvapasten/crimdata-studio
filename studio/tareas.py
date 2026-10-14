@@ -53,7 +53,8 @@ def compilar_uno(motor: Motor, ruta: Path, clase: str) -> dict:
         for pub in pubs:
             res = motor.compilar(pub)
             pngs = [relativa(p) for p in res.pngs]
-            info["variantes"].append({"estilo": pub.estilo, "pngs": pngs})
+            info["variantes"].append({"estilo": pub.estilo, "pngs": pngs, "avisos": res.avisos,
+                                      "pdf": relativa(res.pdf) if res.pdf else ""})
             info["pngs"] += pngs
             info["avisos"] += [f"{pub.estilo}: {a}" if pub.variante else a for a in res.avisos]
         seg = time.perf_counter() - t0
@@ -97,8 +98,12 @@ def escribir_indice(resultados: list[dict]) -> Path:
                 continue
             carpeta = rel(v["pngs"][0]).rsplit("/", 1)[0]
             titulo = (f"EXH. {r['exh']} · " if r.get("exh") else "") + (r.get("tema") or r["id"])
-            enlaces = f"[carpeta]({carpeta})" + (f" · [texto]({carpeta}/texto.txt)" if r.get("texto") or r.get("hashtags") else "")
+            enlaces = f"[carpeta]({carpeta}) · [texto y alt]({carpeta}/texto.txt)"
+            if v.get("pdf"):
+                enlaces += f" · [PDF]({rel(v['pdf'])})"
             out += [f"**{titulo}** · {enlaces}", "", fila(v["pngs"], 130), ""]
+            if v.get("avisos"):
+                out += ["> **Revisar:** " + " · ".join(v["avisos"]), ""]
     if graficos:
         out += ["## Gráficos sueltos", "", fila([p for r in graficos for p in r["pngs"]], 200), ""]
     ruta = RAIZ / "salida" / "README.md"

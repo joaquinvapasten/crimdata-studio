@@ -17,7 +17,7 @@ body { width: var(--W); }
 
 .fondo-piedra {
   --fondo: var(--piedra);
-  --t1: #1B2430; --t2: #4A505B; --t3: #8B877F;
+  --t1: #1B2430; --t2: #4A505B; --t3: #6B6760;
   --acento: var(--ladrillo); --acento-t: var(--piedra);
   --enfasis: var(--ladrillo);
   --bloque: var(--ladrillo); --bloque-t: var(--piedra);
@@ -27,7 +27,7 @@ body { width: var(--W); }
 }
 .fondo-tinta {
   --fondo: var(--tinta);
-  --t1: #EFEDE6; --t2: rgba(239, 237, 230, .74); --t3: rgba(239, 237, 230, .46);
+  --t1: #EFEDE6; --t2: rgba(239, 237, 230, .74); --t3: rgba(239, 237, 230, .54);
   --acento: var(--ladrillo); --acento-t: var(--piedra);
   --enfasis: #E0806C;
   --bloque: var(--ladrillo); --bloque-t: var(--piedra);
