@@ -1,0 +1,29 @@
+(Falta el caption: va en «texto:» en el encabezado del post.)
+
+#criminología #seguridadpública #evidencia #cárceles #reinserción
+
+────────────────────────────────────────
+TEXTO ALTERNATIVO · en Instagram va en «Configuración avanzada», uno por imagen
+
+01. ¿Más seguridad, menos reincidencia? Lo que dice la evidencia sobre cárceles de alta seguridad y el impacto en reinserción.
+
+02. El sentido común dice, “a mayor riesgo, más seguridad”, pero ¿este efecto castigador tiene un impacto en la disminución de reincidencia? La cárcel con efecto disuasivo indica que a mayor riesgo criminal se requiere un recinto con más seguridad. Sin embargo, si observamos el nivel de reincidencia no existe evidencia empírica robusta de que mayor dureza o seguridad carcelaria reduzca la reincidencia.
+
+03. Tasa de reincidencia aumenta hasta en un 31 % respecto de las cárceles tradicionales. Los penales con más seguridad se asocian con reincidencia igual o mayor (nunca menor) que aquellos de menor seguridad. En California prisioneros con el mismo nivel de riesgo elevado enviados a recintos de mayor seguridad registraron una tasa de reincidencia 31% superior que sus pares enviados a prisiones de seguridad baja. Fuente: Gaes y Camp (2009). Unintended consequences. Experimental evidence for the criminogenic effect of prison security level placement on post-release recidivism. Journal of Experimental Criminology 5, 139–162.
+
+04. El aislamiento total tampoco reduce la reincidencia. Las prisiones “Supermax” en EE.UU. (con aislamiento total) no han mostrado reducción de la reincidencia. Un estudio observó 200 egresados de una cárcel de este tipo en el estado de Washington y los comparó con otros 200 de otro tipo de penales, no encontrando diferencias en la reincidencia. De un grupo de 55 liberados directamente a la comunidad (sin transición o preparación para el egreso) el 67% reincidió en los siguientes 3 años, versus 51% del otro grupo. Fuente: Lovell, Johnson y Cain (2007). Recidivism of supermax prisoners in Washington State. Crime & Delinquency 53, 633–656.
+
+05. Impacto negativo en reinserción de prisiones “Supermax” en Florida, EE.UU. Los internos que pasaron por Supermax en Florida mostraban una reincidencia general mayor (58,8%) que la población penal común (46,6%). Tras el emparejamiento metodológico (comparando grupos equivalentes) la diferencia desapareció: 58,8% para el grupo Supermax frente a un 57,6% para el grupo de control. Fuente: Mears y Bales (2009). Supermax incarceration and recidivism. Criminology 47(4), 1131–1166.
+
+06. Incremento en la reincidencia violenta. Los internos procedentes de Supermax registraron una tasa de reincidencia violenta del 24,2%, en comparación con el 20,5% de sus pares que no estuvieron en aislamiento. Esto representa un aumento relativo del 18% en la probabilidad de volver a cometer un delito violento. Gráfico de barras. Pasaron por Supermax: 24,2%; Sin aislamiento: 20,5%. Fuente: Mears y Bales (2009). Supermax incarceration and recidivism. Criminology 47(4), 1131–1166.
+
+07. La mera exposición inicial al aislamiento es lo que detona el comportamiento posterior, independiente del tiempo y condiciones de salida. Mayor tiempo de aislamiento tampoco impacta la reincidencia, pues las variaciones resultaron estadísticamente nulas al comparar 3 y 26 meses de aislamiento. Tampoco se halló un impacto significativo según la cercanía a la fecha de salida (ser liberado directamente desde el aislamiento a la calle frente a pasar un tiempo de transición en pabellones comunes). Fuente: Mears y Bales (2009). Supermax incarceration and recidivism. Criminology 47(4), 1131–1166.
+
+08. Cárceles Supermax: castigan, pero no reinsertan. Ningún estudio muestra que los recintos Supermax reduzcan la reincidencia, más bien evidencian un efecto nulo sobre la reincidencia general y un posible aumento de reincidencia violenta. El modelo carcelario de máxima seguridad estadounidense privilegia el castigo, pero no tiene efectos en reinserción. La mejor evidencia disponible NO respalda un efecto disuasorio y sugiere un posible efecto criminógeno.
+
+────────────────────────────────────────
+FUENTES
+
+- Gaes y Camp (2009). Unintended consequences. Experimental evidence for the criminogenic effect of prison security level placement on post-release recidivism. Journal of Experimental Criminology 5, 139–162.
+- Lovell, Johnson y Cain (2007). Recidivism of supermax prisoners in Washington State. Crime & Delinquency 53, 633–656.
+- Mears y Bales (2009). Supermax incarceration and recidivism. Criminology 47(4), 1131–1166.

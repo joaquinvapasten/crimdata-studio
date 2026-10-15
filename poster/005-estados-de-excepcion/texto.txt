@@ -1,0 +1,39 @@
+(Falta el caption: va en «texto:» en el encabezado del post.)
+
+#criminología #seguridadpública #evidencia #Chile #estadodeexcepción
+
+────────────────────────────────────────
+TEXTO ALTERNATIVO · en Instagram va en «Configuración avanzada», uno por imagen
+
+01. ¿Más excepción, menos crimen? Qué propone la reforma de seguridad y qué dice la evidencia de los países que ya usaron estas herramientas.
+
+02. Un nuevo estado de excepción de seguridad pública. La Reforma Constitucional Pro Seguridad, ingresada al Senado en agosto de 2026, crea un quinto estado de excepción, distinto de los de asamblea, sitio, catástrofe y emergencia: Cuándo: ante una amenaza grave e inminente a la seguridad pública, o cuando ya esté gravemente afectada, en las zonas que defina el Presidente. Duración: 120 días, prorrogables por el Presidente por otros 120 (hasta 240 días sin pasar por el Congreso). Desde la segunda prórroga se requiere acuerdo del Congreso. Mando: cada zona queda bajo la dependencia de un oficial general designado por el Presidente; una ley orgánica regulará la colaboración de las Fuerzas Armadas. Derechos: permite suspender o restringir la libertad personal, de locomoción y de reunión, restringir la asociación, interceptar comunicaciones y requisar bienes. Además: el Presidente podría declarar a un grupo como organización criminal o terrorista, con informe del Ministerio Público o del Consejo de Seguridad Nacional y aprobación de 2/3 del Senado en sesión secreta. Como reforma constitucional necesita 29 votos en el Senado, y su texto se está modificando en la tramitación. Fuente: El Mostrador, La Tercera, CNN Chile (17–19/08/2026); AthenaLAB (20/08); Infobae (23/08); Estapasando (19/09/2026).
+
+03. Cali, Colombia (2019): militares en las calles no redujeron el delito. Herramienta de la reforma: colaboración de las Fuerzas Armadas. El Plan Fortaleza desplegó patrullas militares en las comunas 18 y 20 de Cali, dos focos de crimen violento. Los investigadores asignaron al azar 1.255 manzanas a recibir patrullaje militar y compararon con manzanas que solo tenían presencia policial normal. Los registros no mostraron menos delitos ni mejor percepción de seguridad durante la intervención. Lo que sí aumentó fue el apoyo de los vecinos a los militares y a su participación en seguridad interior. Popular no es lo mismo que eficaz. Fuente: Blair y Weintraub (2023); Innovations for Poverty Action (2024); Blair y Weintraub (2025), American Journal of Political Science.
+
+04. Ecuador: excepción y bandas declaradas terroristas. Herramienta de la reforma: estado de excepción y declaración de organizaciones terroristas. En enero de 2024 Ecuador declaró un “conflicto armado interno”, calificó a sus bandas como terroristas, militarizó calles y cárceles y encadenó estados de excepción. Tasa de homicidios por cada 100 mil habitantes: 47,3 (2023) → 38,8 (2024) → 50,9 (2025), récord histórico con 9.216 víctimas. Gráfico de barras. 2023: 47,3; 2024: 38,8; 2025: 50,9. Fuente: Ministerio del Interior de Ecuador, vía Primicias; Extra.ec. Decreto Ejecutivo 111 (2024).
+
+05. El Salvador: excepción permanente, con letra chica. Herramienta de la reforma: restricción de derechos y prórrogas. El gobierno informa 1,3 homicidios por cada 100 mil habitantes en 2025. El régimen de excepción, vigente desde marzo de 2022, suspende garantías y se ha renovado más de 50 veces: más de 90.000 detenidos, la mayoría sin condena, y al menos 554 muertes bajo custodia. Las restricciones de acceso a los datos dificultan verificar la cifra oficial. Fuente: Gobierno de El Salvador, vía Infobae; Human Rights Watch (2026); Socorro Jurídico Humanitario, vía EFE (03/08/2026).
+
+06. Chile: ya tenemos un estado de excepción, la Macrozona Sur. Rige desde mayo de 2022, con prórrogas sucesivas aprobadas por el Congreso. Según el informe del Ejecutivo de agosto de 2026, los eventos de violencia rural bajaron 84% respecto de 2021, pero los hechos con armas de fuego subieron 9% entre enero y julio de 2026. Son datos del propio gobierno y no aíslan el efecto de la medida. A nivel nacional, las víctimas de homicidio del primer semestre bajaron de 660 (2022) a 472 (2026), sin el nuevo estado de excepción. Fuente: Informe del Ejecutivo a la Cámara de Diputadas y Diputados (17/08/2026); Subsecretaría de Prevención del Delito, informe del primer semestre de 2026; La Tercera.
+
+07. La excepción no es una estrategia. Militares patrullando no redujeron el delito en Cali. En Ecuador, la excepción y las bandas declaradas terroristas no evitaron el año más violento de su historia. En El Salvador, la caída convive con detenciones masivas, la mayoría sin condena, y cifras difíciles de verificar. La evidencia no respalda que la excepción, por sí sola, desarticule al crimen organizado. Antes de crear una nueva, conviene evaluar con datos independientes la que Chile ya aplica.
+
+────────────────────────────────────────
+FUENTES
+
+- El Mostrador, La Tercera, CNN Chile (17–19/08/2026).
+- AthenaLAB (20/08).
+- Infobae (23/08).
+- Estapasando (19/09/2026).
+- Blair y Weintraub (2023).
+- Innovations for Poverty Action (2024).
+- Blair y Weintraub (2025), American Journal of Political Science.
+- Ministerio del Interior de Ecuador, vía Primicias.
+- Extra.ec. Decreto Ejecutivo 111 (2024).
+- Gobierno de El Salvador, vía Infobae.
+- Human Rights Watch (2026).
+- Socorro Jurídico Humanitario, vía EFE (03/08/2026).
+- Informe del Ejecutivo a la Cámara de Diputadas y Diputados (17/08/2026).
+- Subsecretaría de Prevención del Delito, informe del primer semestre de 2026.
+- La Tercera.
