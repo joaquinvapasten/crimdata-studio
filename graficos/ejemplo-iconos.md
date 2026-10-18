@@ -9,7 +9,7 @@ fuente: Institute for Economics and Peace (2025). Global Terrorism Index 2025.
 
 ```grafico
 tipo: iconos
-icono: punto
+icono: bomba
 datos:
   Colombia: 221
   Chile: 52

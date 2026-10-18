@@ -397,10 +397,10 @@
     punto: { w: 10, h: 10, d: "M5 0a5 5 0 1 1 0 10A5 5 0 0 1 5 0Z" },
     cuadrado: { w: 10, h: 10, d: "M2.2 0h5.6A2.2 2.2 0 0 1 10 2.2v5.6A2.2 2.2 0 0 1 7.8 10H2.2A2.2 2.2 0 0 1 0 7.8V2.2A2.2 2.2 0 0 1 2.2 0Z" },
   };
-  // Si los números son grandes, cada ícono vale una cantidad redonda (1, 2, 5, 10, 20…) para no pasar de ~150.
-  const unidadLinda = (max) => {
-    if (max <= 150) return 1;
-    const bruto = max / 120, mag = 10 ** Math.floor(Math.log10(bruto)), r = bruto / mag;
+  // Si los números son grandes, cada ícono vale una cantidad redonda (1, 2, 5, 10, 20…) para no pasar de `limite`.
+  const unidadLinda = (max, limite) => {
+    if (max <= limite) return 1;
+    const bruto = max / (limite * 0.8), mag = 10 ** Math.floor(Math.log10(bruto)), r = bruto / mag;
     return (r <= 1 ? 1 : r <= 2 ? 2 : r <= 5 ? 5 : 10) * mag;
   };
 
@@ -413,9 +413,10 @@
     if (g.orden === "asc" || g.orden === "menor") filas.sort((a, b) => (a.v ?? Infinity) - (b.v ?? Infinity));
     for (const f of filas) if (g.banderas && !f.b) avisos.push(`íconos: no encontré la bandera de «${f.e}» (escribe el país como en el README o pon banderas: no)`);
     const dest = new Set(g.destacar);
-    const forma = FORMAS[g.icono] || FORMAS.persona;
+    const forma = g.forma || FORMAS[g.icono] || FORMAS.persona; // g.forma: un ícono de Font Awesome
     const max = Math.max(0, ...filas.map((f) => f.v ?? 0));
-    const unidad = (g._unidad = g.unidad || unidadLinda(max));
+    // Los íconos de Font Awesome tienen más detalle: necesitan ser más grandes, así que caben menos.
+    const unidad = (g._unidad = g.unidad || unidadLinda(max, g.forma ? 60 : 150));
     const n = filas.length;
 
     const pie = unidad !== 1 ? 54 : 0;
@@ -431,13 +432,14 @@
     const nmax = Math.max(1, ...filas.map((f) => Math.ceil(cuenta(f.v) - 1e-9)));
     // Mejor una sola línea por fila (así el largo se compara como una barra), salvo que los íconos queden diminutos.
     let h = Math.min(alto * 0.6, 58), w, paso, porLinea;
-    const hUna = ((util / ((nmax - 1) * 1.3 + 1)) * forma.h) / forma.w;
-    if (hUna >= Math.min(h, forma.h > forma.w ? 18 : 12)) h = Math.min(h, hUna);
+    const k = 1 + Math.min(0.3, (0.28 * forma.h) / forma.w); // paso entre íconos, en anchos de ícono
+    const hUna = ((util / ((nmax - 1) * k + 1)) * forma.h) / forma.w;
+    if (hUna >= Math.min(h, g.forma ? 26 : forma.h > forma.w ? 18 : 12)) h = Math.min(h, hUna);
     for (;;) {
       w = (h * forma.w) / forma.h;
-      paso = w * 1.3;
+      paso = w * k;
       porLinea = Math.max(1, Math.floor((util - w) / paso) + 1);
-      if (Math.ceil(nmax / porLinea) * h * 1.16 <= alto * 0.8 || h < 7) break;
+      if (Math.ceil(nmax / porLinea) * h * 1.16 <= alto * 0.84 || h < 7) break;
       h *= 0.95;
     }
 

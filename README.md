@@ -182,9 +182,22 @@ anotaciones:
 | `area:` | `no` | Quita el relleno suave de una línea sola |
 | `signo:` | `si` | Antepone + a los valores positivos (útil en `intervalos`) |
 | `eje:` | `Cambio en puntos porcentuales` | Título bajo el eje (en `intervalos`) |
-| `icono:` | `persona`, `punto`, `cuadrado` | Forma de los íconos (en `iconos`; por defecto `persona`) |
+| `icono:` | `bomba`, `esposas`, `pistola`… | Qué ícono se repite (en `iconos`; por defecto `persona`). Ver la lista abajo |
 | `unidad:` | `10` | Cuánto vale cada ícono. Si no la pones, vale 1, o una cifra redonda cuando los números son grandes, y la lámina lo aclara abajo |
 | `banderas:` | `no` | Quita las banderas (para regiones, comunas o cualquier cosa que no sea un país) |
+
+**Íconos** para `tipo: iconos`. Funcionan con o sin tildes (`cárcel` o `carcel`), y donde hay varios nombres separados por `/`, todos dan el mismo ícono. También sirve cualquier ícono gratuito y sólido de [fontawesome.com/icons](https://fontawesome.com/search?o=r&ic=free&s=solid) con su nombre en inglés (`icono: jet-fighter`). El color siempre es el de crim.data: ladrillo para lo destacado y gris para el resto.
+
+| Tema | Nombres para `icono:` |
+|---|---|
+| Dibujados por el estudio | `persona` · `punto` · `cuadrado` |
+| Violencia y delito | `bomba` · `explosion` · `pistola` / `arma` · `fusil` · `soldado` / `militar` · `esposas` / `detenido` · `calavera` / `muerte` / `homicidio` · `veneno` · `carcel` / `prision` · `robo` / `asalto` · `robo-casa` · `herido` / `lesiones` · `violencia` / `puno` · `acoso` · `caida` · `encapuchado` · `espia` / `inteligencia` · `mascara` · `mira` · `alerta` · `huella` · `adn` · `fantasma` · `martillo` |
+| Policía y justicia | `policia` / `carabinero` · `escudo` · `comisaria` · `juez` / `mazo` / `tribunal` · `balanza` / `justicia` · `casco-azul` / `onu` |
+| Bienes y propiedad | `auto` / `vehiculo` · `choque` · `moto` · `bicicleta` · `camion` · `casa` / `hogar` · `casa-rota` · `incendio-casa` · `fuego` / `incendio` · `celular` · `caja-registradora` · `edificio` |
+| Dinero | `dinero` / `plata` / `billete` · `billetes` · `saco-dinero` / `fortuna` · `monedas` · `soborno` / `coima` · `boveda` · `banco` · `edificio-publico` |
+| Drogas y salud | `marihuana` · `pastillas` / `drogas` · `jeringa` · `alcohol` / `vino` · `cerveza` · `cigarro` / `tabaco` · `virus` · `hospital` · `cruz` · `gota` / `sangre` |
+| Personas | `mujer` · `hombre` · `nino` · `bebe` · `grupo` / `personas` · `migrante` · `ejecutivo` |
+| Otros | `avion` · `caza` · `barco` · `escuela` / `colegio` · `educacion` / `birrete` · `trabajo` / `maletin` · `voto` · `prensa` / `periodico` · `protesta` / `megafono` · `bandera` · `camara` · `vigilancia` / `ojo` · `candado` · `arbol` · `planta` · `telefono` · `mapa` · `ruta` · `camino` · `corazon-roto` · `iglesia` · `mezquita` |
 
 **Desde Excel o R:** guarda un CSV en `datos/` (con `,` o `;`, y decimales con coma o punto) y escribe `datos: mi-archivo.csv`. La primera columna son las etiquetas; las demás, series. Elige columnas con `columnas: [2019, 2023]`.
 
@@ -224,7 +237,7 @@ Para cambiar el diseño: `studio/plantillas/estilos/*.css` (un archivo por estil
 posts/       un .md por carrusel (los que empiezan con _ se ignoran)
 graficos/    un .md por gráfico suelto
 datos/       CSV para los gráficos
-marca/       logo, paleta, hoja de marca, tipografías y banderas (flag-icons, licencia MIT)
+marca/       logo, paleta, hoja de marca, tipografías, banderas (flag-icons, MIT) e íconos (Font Awesome Free, CC BY 4.0)
 studio/      el motor (lector, plantillas, gráficos, vista en vivo)
 salida/      los PNG generados, una carpeta por estilo (no se suben a main: van a la rama png)
 ```

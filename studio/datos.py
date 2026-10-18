@@ -22,7 +22,6 @@ TIPOS = {
 }
 OPCIONES = {"sufijo", "prefijo", "desde_cero", "area", "valores", "orden", "total", "anotaciones", "eje", "signo",
             "icono", "unidad"}
-ICONOS = {"persona", "punto", "cuadrado"}
 MAX_SERIES = 4
 
 
@@ -226,10 +225,14 @@ def normalizar_grafico(spec: dict, base: Path) -> dict:
                 v = [{"x": str(a), "texto": str(b)} for a, b in v.items()]
             salida[k] = v
     if tipo == "iconos":
-        icono = str(salida.get("icono", "persona")).strip().lower()
-        if icono not in ICONOS:
-            raise ErrorDeDatos(f"ícono «{icono}» no existe. Usa: {', '.join(sorted(ICONOS))}")
-        salida["icono"] = icono
+        from .iconos import forma
+
+        icono = str(salida.get("icono", "persona")).strip()
+        try:
+            salida["forma"] = forma(icono)  # None → uno de los propios (persona, punto, cuadrado)
+        except ValueError as e:
+            raise ErrorDeDatos(str(e))
+        salida["icono"] = icono.lower()
         if "unidad" in salida:
             salida["unidad"] = numero(salida["unidad"])
             if not salida["unidad"] or salida["unidad"] <= 0:

@@ -37,7 +37,7 @@ body { width: var(--W); }
 }
 .fondo-ladrillo {
   --fondo: var(--ladrillo);
-  --t1: #EFEDE6; --t2: rgba(239, 237, 230, .86); --t3: rgba(239, 237, 230, .64);
+  --t1: #EFEDE6; --t2: rgba(239, 237, 230, .94); --t3: rgba(239, 237, 230, .9);
   --acento: var(--piedra); --acento-t: var(--ladrillo);
   --enfasis: #FFFFFF;
   --bloque: var(--tinta); --bloque-t: var(--piedra);
@@ -47,7 +47,7 @@ body { width: var(--W); }
 }
 .fondo-musgo {
   --fondo: var(--musgo);
-  --t1: #EFEDE6; --t2: rgba(239, 237, 230, .86); --t3: rgba(239, 237, 230, .64);
+  --t1: #EFEDE6; --t2: rgba(239, 237, 230, .94); --t3: rgba(239, 237, 230, .9);
   --acento: var(--piedra); --acento-t: var(--musgo);
   --enfasis: #FFFFFF;
   --bloque: var(--tinta); --bloque-t: var(--piedra);
