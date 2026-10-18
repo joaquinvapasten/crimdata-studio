@@ -62,7 +62,7 @@ Hay tres. **Mientras no elijamos uno, cada post sale en los tres** (una carpeta 
 | `poster` | solo póster |
 | `[poster, suave]` | esos dos |
 
-Los gráficos sueltos de `graficos/` salen en `poster` si no dicen otra cosa.
+Los gráficos sueltos de `graficos/` salen en `poster` y sobre fondo `tinta`, si no dicen otra cosa (`fondo:` en la lámina lo cambia).
 
 | `estilo:` | Cómo se ve |
 |---|---|
@@ -184,7 +184,7 @@ anotaciones:
 | `eje:` | `Cambio en puntos porcentuales` | Título bajo el eje (en `intervalos`) |
 | `icono:` | `bomba`, `esposas`, `pistola`… | Qué ícono se repite (en `iconos`; por defecto `persona`). Ver la lista abajo |
 | `unidad:` | `10` | Cuánto vale cada ícono. Si no la pones, vale 1, o una cifra redonda cuando los números son grandes, y la lámina lo aclara abajo |
-| `banderas:` | `no` | Quita las banderas (para regiones, comunas o cualquier cosa que no sea un país) |
+| `banderas:` | `no` / `si` | En `iconos`, `barras_h` y `comparacion` la bandera sale sola cuando las filas son países (en barras, si al menos la mitad lo son). `no` la quita y `si` la fuerza |
 
 **Íconos** para `tipo: iconos`. Funcionan con o sin tildes (`cárcel` o `carcel`), y donde hay varios nombres separados por `/`, todos dan el mismo ícono. También sirve cualquier ícono gratuito y sólido de [fontawesome.com/icons](https://fontawesome.com/search?o=r&ic=free&s=solid) con su nombre en inglés (`icono: jet-fighter`). El color siempre es el de crim.data: ladrillo para lo destacado y gris para el resto.
 

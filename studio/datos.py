@@ -237,13 +237,18 @@ def normalizar_grafico(spec: dict, base: Path) -> dict:
             salida["unidad"] = numero(salida["unidad"])
             if not salida["unidad"] or salida["unidad"] <= 0:
                 raise ErrorDeDatos("«unidad» debe ser un número mayor que cero (cuánto vale cada ícono)")
-        # banderas: no → sin banderas (para regiones, comunas o cualquier cosa que no sea un país)
-        if str(spec.get("banderas", "si")).strip().lower() in ("no", "false", "0"):
-            salida["banderas"] = None
-        else:
+    if tipo in ("iconos", "barras_h", "comparacion"):
+        # Bandera junto a cada fila si los datos son por país. En íconos siempre (salvo banderas: no);
+        # en barras y comparaciones, solo si al menos la mitad de las filas son países (o con banderas: si).
+        pedido = str(spec.get("banderas", "auto")).strip().lower()
+        salida["banderas"] = None
+        if pedido not in ("no", "false", "0"):
             from .paises import bandera
 
-            salida["banderas"] = [bandera(e) for e in etiquetas]
+            banderas = [bandera(e) for e in etiquetas]
+            forzado = tipo == "iconos" or pedido in ("si", "sí", "true", "1")
+            if forzado or sum(map(bool, banderas)) >= len(banderas) / 2:
+                salida["banderas"] = banderas
     if tipo == "proporcion":
         salida.setdefault("total", 100)
         salida.setdefault("sufijo", "%" if float(salida["total"]) == 100 else "")

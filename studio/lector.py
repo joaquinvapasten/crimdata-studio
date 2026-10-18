@@ -40,6 +40,7 @@ ESTILOS = {
 }
 # Sin `estilo:`, un post sale en los tres estilos (una carpeta por estilo) y un gráfico suelto en póster.
 ESTILO_POR_DEFECTO = {"post": "todos", "grafico": "poster"}
+FONDO_GRAFICO_SUELTO = "tinta"
 DIRECTIVAS = ("tipo", "etiqueta", "fondo", "fuente", "nota")
 
 RE_DIRECTIVA = re.compile(r"^\s*(%s)\s*:\s*(.*?)\s*$" % "|".join(DIRECTIVAS), re.I)
@@ -276,7 +277,9 @@ def _leer_lamina(lineas: list[str], n: int, pub: Publicacion, base: Path) -> Lam
             lam.tipo = "portada"
         else:
             lam.tipo = "texto"
-    lam.fondo = (lam.fondo or ESTILOS[pub.estilo].get(lam.tipo, "piedra")).lower()
+    # Los gráficos sueltos (graficos/) van sobre tinta, salvo que la lámina pida otro fondo.
+    defecto = FONDO_GRAFICO_SUELTO if pub.clase == "grafico" else ESTILOS[pub.estilo].get(lam.tipo, "piedra")
+    lam.fondo = (lam.fondo or defecto).lower()
     if lam.fondo not in FONDOS:
         raise ErrorDeFormato(f"Lámina {n}: fondo «{lam.fondo}» no existe. Usa: {', '.join(sorted(FONDOS))}")
     if lam.tipo == "portada" and not lam.etiqueta and pub.exh:

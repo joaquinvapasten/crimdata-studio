@@ -141,18 +141,47 @@
     nodo("line", { x1: izq, x2: W, y1: y(0), y2: y(0), stroke: c.t1, "stroke-width": 2, opacity: 0.55 }, svg);
   }
 
+  // ── banderas (gráficos por país) ──────────────────────────────
+  let nBanderas = 0;
+  function bandera(svg, href, x, y, lado) {
+    const id = `bandera-${++nBanderas}`;
+    const defs = svg.querySelector("defs") || nodo("defs", {}, svg);
+    const clip = nodo("clipPath", { id }, defs);
+    nodo("rect", { x, y, width: lado, height: lado, rx: lado * 0.24 }, clip);
+    nodo("image", { href, x, y, width: lado, height: lado, preserveAspectRatio: "xMidYMid slice", "clip-path": `url(#${id})` }, svg);
+  }
+  const sinBandera = (g, f) => {
+    if (g.banderas && !f.ban) avisos.push(`no encontré la bandera de «${f.e}» (escribe el país como en el README o pon banderas: no)`);
+  };
+
+  // Columna de nombres a la izquierda, con la bandera entre el nombre y el gráfico si los datos son por país.
+  // Devuelve dónde empieza el área del gráfico y la función que dibuja el nombre (y la bandera) de cada fila.
+  function columnaNombres(svg, g, filas, W, alto, margen) {
+    const lado = g.banderas ? Math.min(alto * 0.84, 38) : 0;
+    const hueco = lado ? lado + 14 : 0;
+    const nombre = Math.min(Math.max(...filas.map((f) => medir(svg, f.e, "g-cat fuerte"))), W * 0.36);
+    const izq = nombre + hueco + margen;
+    const dibujar = (f, cy, esDest) => {
+      const t = texto(svg, izq - margen - hueco, cy + 9, f.e, "g-cat" + (esDest ? " fuerte" : ""), "end");
+      if (ancho(t) > nombre) t.setAttribute("textLength", nombre), t.setAttribute("lengthAdjust", "spacingAndGlyphs");
+      if (lado && f.ban) bandera(svg, f.ban, izq - margen - lado, cy - lado / 2, lado);
+      sinBandera(g, f);
+    };
+    return { izq, dibujar };
+  }
+
   // ── barras horizontales (ranking) ─────────────────────────────
   function barrasH(caja, g, c) {
     const W = caja.clientWidth, H = caja.clientHeight;
     const svg = nodo("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}` }, caja);
-    let filas = g.etiquetas.map((e, i) => ({ e, v: g.series[0].valores[i] }));
+    let filas = g.etiquetas.map((e, i) => ({ e, v: g.series[0].valores[i], ban: g.banderas ? g.banderas[i] : null }));
     if (g.orden === "desc" || g.orden === "mayor") filas.sort((a, b) => (b.v ?? -Infinity) - (a.v ?? -Infinity));
     if (g.orden === "asc" || g.orden === "menor") filas.sort((a, b) => (a.v ?? Infinity) - (b.v ?? Infinity));
     const dest = new Set(g.destacar);
     const n = filas.length;
-    const izq = Math.min(Math.max(...filas.map((f) => medir(svg, f.e, "g-cat"))), W * 0.42) + 26;
-    const der = Math.max(...filas.map((f) => medir(svg, fmt(g, f.v), "g-valor fuerte"))) + 18;
     const alto = Math.min(H / n, 88);
+    const { izq, dibujar } = columnaNombres(svg, g, filas, W, alto, 22);
+    const der = Math.max(...filas.map((f) => medir(svg, fmt(g, f.v), "g-valor fuerte"))) + 18;
     const grosor = Math.min(alto * 0.5, 40);
     const y0 = (H - alto * n) / 2;
     const vals = filas.map((f) => f.v).filter((v) => v != null);
@@ -161,8 +190,7 @@
     filas.forEach((f, i) => {
       const cy = y0 + alto * i + alto / 2;
       const esDest = dest.has(f.e);
-      const t = texto(svg, izq - 26, cy + 9, f.e, "g-cat" + (esDest ? " fuerte" : ""), "end");
-      if (ancho(t) > izq - 26) t.setAttribute("textLength", izq - 26), t.setAttribute("lengthAdjust", "spacingAndGlyphs");
+      dibujar(f, cy, esDest);
       if (f.v == null) return;
       if (f.v !== 0)
         nodo("path", { d: barraH(x(0), x(f.v), cy - grosor / 2, grosor, 7), fill: dest.size ? (esDest ? c.s1 : c.s0) : c.s1 }, svg);
@@ -296,7 +324,7 @@
     const W = caja.clientWidth, H = caja.clientHeight;
     const svg = nodo("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}` }, caja);
     const [a, b] = g.series;
-    let filas = g.etiquetas.map((e, i) => ({ e, a: a.valores[i], b: b.valores[i] }));
+    let filas = g.etiquetas.map((e, i) => ({ e, a: a.valores[i], b: b.valores[i], ban: g.banderas ? g.banderas[i] : null }));
     if (g.orden === "desc" || g.orden === "mayor") filas.sort((p, q) => (q.b ?? -Infinity) - (p.b ?? -Infinity));
     if (g.orden === "asc" || g.orden === "menor") filas.sort((p, q) => (p.b ?? Infinity) - (q.b ?? Infinity));
     if (g.orden === "cambio") filas.sort((p, q) => (q.b - q.a) - (p.b - p.a));
@@ -309,10 +337,10 @@
     if (g.desde_cero) minV = Math.min(0, minV);
     const { t: ticks, paso } = ticksLindos(minV, maxV, 4);
     const dT = decimalesDe(paso);
-    const izq = Math.min(Math.max(...filas.map((f) => medir(svg, f.e, "g-cat"))), W * 0.36) + 30;
+    const alto = Math.min((H - arriba - abajo) / n, 96);
+    const { izq, dibujar } = columnaNombres(svg, g, filas, W, alto, 30);
     const vw = Math.max(...vals.map((v) => medir(svg, fmt(g, v), "g-valor"))) + 22;
     const x = (v) => izq + vw + ((v - ticks[0]) / (ticks[ticks.length - 1] - ticks[0] || 1)) * (W - izq - vw * 2);
-    const alto = Math.min((H - arriba - abajo) / n, 96);
     const y0 = arriba;
     for (const v of ticks) {
       nodo("line", { x1: x(v), x2: x(v), y1: y0, y2: y0 + alto * n, stroke: c.grilla, "stroke-width": 1.5 }, svg);
@@ -321,8 +349,7 @@
     filas.forEach((f, i) => {
       const cy = y0 + alto * i + alto / 2;
       const esDest = dest.has(f.e);
-      const t = texto(svg, izq - 30, cy + 9, f.e, "g-cat" + (esDest ? " fuerte" : ""), "end");
-      if (ancho(t) > izq - 30) t.setAttribute("textLength", izq - 30), t.setAttribute("lengthAdjust", "spacingAndGlyphs");
+      dibujar(f, cy, esDest);
       if (f.a == null || f.b == null) return;
       nodo("line", { x1: x(f.a), x2: x(f.b), y1: cy, y2: cy, stroke: c.s0, "stroke-width": 7, "stroke-linecap": "round" }, svg);
       nodo("circle", { cx: x(f.a), cy, r: 10, fill: c.gris, stroke: c.fondo, "stroke-width": 4 }, svg);
@@ -408,10 +435,10 @@
     const W = caja.clientWidth, H = caja.clientHeight;
     const svg = nodo("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}` }, caja);
     const id = `g${caja.dataset.i}`;
-    let filas = g.etiquetas.map((e, i) => ({ e, v: g.series[0].valores[i], b: g.banderas ? g.banderas[i] : null }));
+    let filas = g.etiquetas.map((e, i) => ({ e, v: g.series[0].valores[i], ban: g.banderas ? g.banderas[i] : null }));
     if (g.orden === "desc" || g.orden === "mayor") filas.sort((a, b) => (b.v ?? -Infinity) - (a.v ?? -Infinity));
     if (g.orden === "asc" || g.orden === "menor") filas.sort((a, b) => (a.v ?? Infinity) - (b.v ?? Infinity));
-    for (const f of filas) if (g.banderas && !f.b) avisos.push(`íconos: no encontré la bandera de «${f.e}» (escribe el país como en el README o pon banderas: no)`);
+    for (const f of filas) sinBandera(g, f);
     const dest = new Set(g.destacar);
     const forma = g.forma || FORMAS[g.icono] || FORMAS.persona; // g.forma: un ícono de Font Awesome
     const max = Math.max(0, ...filas.map((f) => f.v ?? 0));
@@ -456,12 +483,7 @@
       const xNombre = izq - 24 - (lado ? lado + 16 : 0);
       const t = texto(svg, xNombre, cy + 9, f.e, "g-cat" + (esDest ? " fuerte" : ""), "end");
       if (ancho(t) > nombre) t.setAttribute("textLength", nombre), t.setAttribute("lengthAdjust", "spacingAndGlyphs");
-      if (lado && f.b) {
-        const clip = nodo("clipPath", { id: `${id}-b${i}` }, defs);
-        nodo("rect", { x: izq - 24 - lado, y: cy - lado / 2, width: lado, height: lado, rx: lado * 0.24 }, clip);
-        nodo("image", { href: f.b, x: izq - 24 - lado, y: cy - lado / 2, width: lado, height: lado,
-          preserveAspectRatio: "xMidYMid slice", "clip-path": `url(#${id}-b${i})` }, svg);
-      }
+      if (lado && f.ban) bandera(svg, f.ban, izq - 24 - lado, cy - lado / 2, lado);
       if (f.v == null) return;
       const k = cuenta(f.v), total = Math.ceil(k - 1e-9), lineas = Math.max(1, Math.ceil(total / porLinea));
       const color = dest.size ? (esDest ? c.s1 : c.gris) : c.s1;
