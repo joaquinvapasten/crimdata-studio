@@ -391,7 +391,102 @@
     });
   }
 
-  const DIBUJAR = { barras, barras_h: barrasH, lineas, proporcion, comparacion, intervalos };
+  // ── íconos (una fila por país: bandera, nombre y un monito por unidad) ──
+  const FORMAS = {
+    persona: { w: 10, h: 16, d: "M5 0a2.6 2.6 0 1 1 0 5.2A2.6 2.6 0 0 1 5 0ZM1.6 6.2h6.8a1.6 1.6 0 0 1 1.6 1.6v4.4H8.2V16H5.6v-3.8H4.4V16H1.8v-3.8H0V7.8a1.6 1.6 0 0 1 1.6-1.6Z" },
+    punto: { w: 10, h: 10, d: "M5 0a5 5 0 1 1 0 10A5 5 0 0 1 5 0Z" },
+    cuadrado: { w: 10, h: 10, d: "M2.2 0h5.6A2.2 2.2 0 0 1 10 2.2v5.6A2.2 2.2 0 0 1 7.8 10H2.2A2.2 2.2 0 0 1 0 7.8V2.2A2.2 2.2 0 0 1 2.2 0Z" },
+  };
+  // Si los números son grandes, cada ícono vale una cantidad redonda (1, 2, 5, 10, 20…) para no pasar de ~150.
+  const unidadLinda = (max) => {
+    if (max <= 150) return 1;
+    const bruto = max / 120, mag = 10 ** Math.floor(Math.log10(bruto)), r = bruto / mag;
+    return (r <= 1 ? 1 : r <= 2 ? 2 : r <= 5 ? 5 : 10) * mag;
+  };
+
+  function iconos(caja, g, c) {
+    const W = caja.clientWidth, H = caja.clientHeight;
+    const svg = nodo("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}` }, caja);
+    const id = `g${caja.dataset.i}`;
+    let filas = g.etiquetas.map((e, i) => ({ e, v: g.series[0].valores[i], b: g.banderas ? g.banderas[i] : null }));
+    if (g.orden === "desc" || g.orden === "mayor") filas.sort((a, b) => (b.v ?? -Infinity) - (a.v ?? -Infinity));
+    if (g.orden === "asc" || g.orden === "menor") filas.sort((a, b) => (a.v ?? Infinity) - (b.v ?? Infinity));
+    for (const f of filas) if (g.banderas && !f.b) avisos.push(`íconos: no encontré la bandera de «${f.e}» (escribe el país como en el README o pon banderas: no)`);
+    const dest = new Set(g.destacar);
+    const forma = FORMAS[g.icono] || FORMAS.persona;
+    const max = Math.max(0, ...filas.map((f) => f.v ?? 0));
+    const unidad = (g._unidad = g.unidad || unidadLinda(max));
+    const n = filas.length;
+
+    const pie = unidad !== 1 ? 54 : 0;
+    const alto = (H - pie) / n;
+    const lado = g.banderas ? Math.min(alto * 0.5, 46) : 0;
+    const nombre = Math.min(Math.max(...filas.map((f) => medir(svg, f.e, "g-cat fuerte"))), W * 0.3);
+    const izq = nombre + (lado ? lado + 16 : 0) + 24;
+    const der = Math.max(...filas.map((f) => medir(svg, fmt(g, f.v), "g-valor fuerte"))) + 18;
+    const util = W - izq - der;
+
+    // El ícono más grande que deje caber la fila más larga en su alto (todas las filas usan el mismo tamaño).
+    const cuenta = (v) => Math.max(0, (v ?? 0) / unidad);
+    const nmax = Math.max(1, ...filas.map((f) => Math.ceil(cuenta(f.v) - 1e-9)));
+    // Mejor una sola línea por fila (así el largo se compara como una barra), salvo que los íconos queden diminutos.
+    let h = Math.min(alto * 0.6, 58), w, paso, porLinea;
+    const hUna = ((util / ((nmax - 1) * 1.3 + 1)) * forma.h) / forma.w;
+    if (hUna >= Math.min(h, forma.h > forma.w ? 18 : 12)) h = Math.min(h, hUna);
+    for (;;) {
+      w = (h * forma.w) / forma.h;
+      paso = w * 1.3;
+      porLinea = Math.max(1, Math.floor((util - w) / paso) + 1);
+      if (Math.ceil(nmax / porLinea) * h * 1.16 <= alto * 0.8 || h < 7) break;
+      h *= 0.95;
+    }
+
+    const defs = nodo("defs", {}, svg);
+    const simbolo = nodo("symbol", { id: `${id}-ic`, viewBox: `0 0 ${forma.w} ${forma.h}` }, defs);
+    nodo("path", { d: forma.d }, simbolo);
+    const punteada = (y) => nodo("line", { x1: 0, x2: W, y1: y, y2: y, stroke: c.gris, "stroke-width": 2,
+      "stroke-linecap": "round", "stroke-dasharray": "0.1 10", opacity: 0.7 }, svg);
+
+    filas.forEach((f, i) => {
+      const top = alto * i, cy = top + alto / 2;
+      punteada(top + 1);
+      const esDest = dest.has(f.e);
+      const xNombre = izq - 24 - (lado ? lado + 16 : 0);
+      const t = texto(svg, xNombre, cy + 9, f.e, "g-cat" + (esDest ? " fuerte" : ""), "end");
+      if (ancho(t) > nombre) t.setAttribute("textLength", nombre), t.setAttribute("lengthAdjust", "spacingAndGlyphs");
+      if (lado && f.b) {
+        const clip = nodo("clipPath", { id: `${id}-b${i}` }, defs);
+        nodo("rect", { x: izq - 24 - lado, y: cy - lado / 2, width: lado, height: lado, rx: lado * 0.24 }, clip);
+        nodo("image", { href: f.b, x: izq - 24 - lado, y: cy - lado / 2, width: lado, height: lado,
+          preserveAspectRatio: "xMidYMid slice", "clip-path": `url(#${id}-b${i})` }, svg);
+      }
+      if (f.v == null) return;
+      const k = cuenta(f.v), total = Math.ceil(k - 1e-9), lineas = Math.max(1, Math.ceil(total / porLinea));
+      const color = dest.size ? (esDest ? c.s1 : c.gris) : c.s1;
+      const y0 = cy - (lineas * h + (lineas - 1) * h * 0.16) / 2;
+      for (let j = 0; j < total; j++) {
+        const x = izq + (j % porLinea) * paso, y = y0 + Math.floor(j / porLinea) * h * 1.16;
+        const resto = k - j;
+        let padre = svg;
+        if (resto < 1 - 1e-9) { // el último ícono, cortado si sobra una fracción
+          const clip = nodo("clipPath", { id: `${id}-p${i}` }, defs);
+          nodo("rect", { x, y, width: w * resto, height: h }, clip);
+          padre = nodo("g", { "clip-path": `url(#${id}-p${i})` }, svg);
+        }
+        nodo("use", { href: `#${id}-ic`, x, y, width: w, height: h, fill: color }, padre);
+      }
+      const xv = izq + (total ? (Math.min(total, porLinea) - 1) * paso + w + 16 : 0);
+      texto(svg, xv, cy + 9, fmt(g, f.v), "g-valor" + (esDest || !dest.size ? " fuerte" : ""));
+    });
+    punteada(alto * n - 1);
+
+    if (pie) {
+      nodo("use", { href: `#${id}-ic`, x: izq, y: H - 40, width: (30 * forma.w) / forma.h, height: 30, fill: c.s1 }, svg);
+      texto(svg, izq + (30 * forma.w) / forma.h + 12, H - 16, `= ${nf(0).format(unidad)}`, "g-eje");
+    }
+  }
+
+  const DIBUJAR = { barras, barras_h: barrasH, lineas, proporcion, comparacion, intervalos, iconos };
 
   // ── ajuste de texto ───────────────────────────────────────────
   function ajustar(lam) {
@@ -466,7 +561,8 @@
   function describir(g) {
     const nombre = { barras: "Gráfico de barras", barras_h: "Gráfico de barras", lineas: "Gráfico de líneas",
                      proporcion: "Gráfico de proporción", comparacion: "Gráfico de comparación",
-                     intervalos: "Gráfico de estimaciones con intervalos de confianza" }[g.tipo];
+                     intervalos: "Gráfico de estimaciones con intervalos de confianza",
+                     iconos: g._unidad > 1 ? `Gráfico de íconos (cada ícono = ${nf(0).format(g._unidad)})` : "Gráfico de íconos" }[g.tipo];
     const pares = (s) => g.etiquetas.map((e, i) => `${e}: ${fmt(g, s.valores[i])}`).filter((x) => !x.endsWith(": "));
     if (g.tipo === "proporcion")
       return `${nombre}: ` + g.etiquetas.map((e, i) => `${fmt(g, g.series.length > 1 ? g.series[i]?.valores[0] : g.series[0].valores[i])} ${e}`).join("; ") + ".";

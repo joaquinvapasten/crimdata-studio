@@ -69,6 +69,25 @@ destacar: 2020
 
 ---
 
+etiqueta: Gráfico · íconos por país
+# Un monito por persona
+La bandera sale sola a partir del nombre del país.
+fuente: Datos ficticios, solo para mostrar el formato.
+
+```grafico
+tipo: iconos
+datos:
+  Argentina: 18
+  Chile: 7
+  Colombia: 25
+  Perú: 12
+  Uruguay: 3
+orden: desc
+destacar: Chile
+```
+
+---
+
 tipo: cierre
 etiqueta: Cierre
 # El cierre va sobre tinta

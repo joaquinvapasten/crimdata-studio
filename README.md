@@ -166,6 +166,7 @@ anotaciones:
 | `proporcion` | "X de cada 100" (grilla de 10×10) | `datos: {Denuncia: 38, No denuncia: 62}` |
 | `comparacion` | Antes y después por categoría | `series: ["2019", "2023"]` + `datos: {Zona: [antes, después]}` |
 | `intervalos` | Resultados de un modelo: estimación con su intervalo de confianza | `datos: {Etiqueta: [estimación, mínimo, máximo]}` (una lista de tríos por fila si hay dos series, con `series: [A, B]`) |
+| `iconos` | Una fila por país con su bandera y un monito por unidad (estilo Yachay) | `datos: {Chile: 6, Perú: 1}`; la bandera sale sola del nombre del país, en español o inglés |
 
 **Opciones**
 
@@ -181,6 +182,9 @@ anotaciones:
 | `area:` | `no` | Quita el relleno suave de una línea sola |
 | `signo:` | `si` | Antepone + a los valores positivos (útil en `intervalos`) |
 | `eje:` | `Cambio en puntos porcentuales` | Título bajo el eje (en `intervalos`) |
+| `icono:` | `persona`, `punto`, `cuadrado` | Forma de los íconos (en `iconos`; por defecto `persona`) |
+| `unidad:` | `10` | Cuánto vale cada ícono. Si no la pones, vale 1, o una cifra redonda cuando los números son grandes, y la lámina lo aclara abajo |
+| `banderas:` | `no` | Quita las banderas (para regiones, comunas o cualquier cosa que no sea un país) |
 
 **Desde Excel o R:** guarda un CSV en `datos/` (con `,` o `;`, y decimales con coma o punto) y escribe `datos: mi-archivo.csv`. La primera columna son las etiquetas; las demás, series. Elige columnas con `columnas: [2019, 2023]`.
 
@@ -220,7 +224,7 @@ Para cambiar el diseño: `studio/plantillas/estilos/*.css` (un archivo por estil
 posts/       un .md por carrusel (los que empiezan con _ se ignoran)
 graficos/    un .md por gráfico suelto
 datos/       CSV para los gráficos
-marca/       logo, paleta, hoja de marca y tipografías
+marca/       logo, paleta, hoja de marca, tipografías y banderas (flag-icons, licencia MIT)
 studio/      el motor (lector, plantillas, gráficos, vista en vivo)
 salida/      los PNG generados, una carpeta por estilo (no se suben a main: van a la rama png)
 ```

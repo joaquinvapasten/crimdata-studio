@@ -18,8 +18,11 @@ TIPOS = {
     "proporcion": "proporcion", "proporción": "proporcion", "waffle": "proporcion",
     "comparacion": "comparacion", "comparación": "comparacion", "antes_despues": "comparacion",
     "intervalos": "intervalos", "intervalo": "intervalos", "coeficientes": "intervalos",
+    "iconos": "iconos", "íconos": "iconos", "monitos": "iconos", "pictograma": "iconos",
 }
-OPCIONES = {"sufijo", "prefijo", "desde_cero", "area", "valores", "orden", "total", "anotaciones", "eje", "signo"}
+OPCIONES = {"sufijo", "prefijo", "desde_cero", "area", "valores", "orden", "total", "anotaciones", "eje", "signo",
+            "icono", "unidad"}
+ICONOS = {"persona", "punto", "cuadrado"}
 MAX_SERIES = 4
 
 
@@ -172,7 +175,7 @@ def normalizar_grafico(spec: dict, base: Path) -> dict:
     tipo = TIPOS.get(crudo)
     if not tipo:
         raise ErrorDeDatos(f"tipo de gráfico «{crudo}» no existe. "
-                           "Usa: barras, barras_h, lineas, proporcion, comparacion, intervalos")
+                           "Usa: barras, barras_h, lineas, proporcion, comparacion, intervalos, iconos")
 
     etiquetas, series = _intervalos(spec) if tipo == "intervalos" else _series(spec, base)
     if not series or not etiquetas:
@@ -180,7 +183,7 @@ def normalizar_grafico(spec: dict, base: Path) -> dict:
     for s in series:
         s["valores"] = (s["valores"] + [None] * len(etiquetas))[:len(etiquetas)]
 
-    if tipo in ("barras", "barras_h") and len(series) > 1:
+    if tipo in ("barras", "barras_h", "iconos") and len(series) > 1:
         series = series[:1]  # una sola serie; para varias usa lineas o comparacion
     if tipo == "comparacion" and len(series) != 2:
         raise ErrorDeDatos("«comparacion» necesita exactamente dos valores por fila (antes y después)")
@@ -222,6 +225,22 @@ def normalizar_grafico(spec: dict, base: Path) -> dict:
             if k == "anotaciones" and isinstance(v, dict):
                 v = [{"x": str(a), "texto": str(b)} for a, b in v.items()]
             salida[k] = v
+    if tipo == "iconos":
+        icono = str(salida.get("icono", "persona")).strip().lower()
+        if icono not in ICONOS:
+            raise ErrorDeDatos(f"ícono «{icono}» no existe. Usa: {', '.join(sorted(ICONOS))}")
+        salida["icono"] = icono
+        if "unidad" in salida:
+            salida["unidad"] = numero(salida["unidad"])
+            if not salida["unidad"] or salida["unidad"] <= 0:
+                raise ErrorDeDatos("«unidad» debe ser un número mayor que cero (cuánto vale cada ícono)")
+        # banderas: no → sin banderas (para regiones, comunas o cualquier cosa que no sea un país)
+        if str(spec.get("banderas", "si")).strip().lower() in ("no", "false", "0"):
+            salida["banderas"] = None
+        else:
+            from .paises import bandera
+
+            salida["banderas"] = [bandera(e) for e in etiquetas]
     if tipo == "proporcion":
         salida.setdefault("total", 100)
         salida.setdefault("sufijo", "%" if float(salida["total"]) == 100 else "")
